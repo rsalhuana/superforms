@@ -57,7 +57,7 @@ function addRadio($name, $value = '', $label = '', $attr = '', $required = 0)
     if ($required == 1) {
         $required_html = 'required';
     }
-    return '<input type="radio" id="' . $name . '" name="' . $name . '" value="' . $value . '" ' . $attr . ' ' . $required_html . ' >' . $value . ' ';
+    return '<input type="radio" id="' . $name .'_'.$value . '" name="' . $name . '" value="' . $value . '" ' . $attr . ' ' . $required_html . ' >' . $value . ' ';
 }
 
 function addOption($name, $value = '', $label = '', $attr = '')
@@ -452,7 +452,20 @@ $form_html .= '</form >';
             $(".input-file-img").fileinput({
                 'showUpload': false
             });
-            $("input[name$='MaterialPOP']").click(function() {
+            $("input[name='Colgante'],input[name='Jalavista'],input[name='TachoDispensador'],input[name='BannerToldo']").click(function() {
+                var isChecked = false;
+                $("input[name='Colgante'],input[name='Jalavista'],input[name='TachoDispensador'],input[name='BannerToldo']").each(function() {
+                    if($(this).is(':checked') && $(this).val() == 'Si') {
+                        isChecked = true;
+                    }
+                });
+                if (isChecked == true) {
+                    $('#MaterialPOP_Si').prop("checked", true);
+                } else {
+                    $('#MaterialPOP_No').prop("checked", true);
+                }
+            });
+            /*$("input[name$='MaterialPOP']").click(function() {
                 var answer = $(this).val();
                 
                 if(answer == "Si"){
@@ -461,7 +474,7 @@ $form_html .= '</form >';
                     $("#divMaterialPOP").hide();
                 }
                 
-            });
+            });*/
 
             $('.panel-collapse').each(function() {
                 $(this).addClass('in');
