@@ -132,22 +132,38 @@ while ($row = mysql_fetch_assoc($form_fields)) {
     validation if posted
 ============================================= */
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
+    $target_dir = "uploads/";
+    $uploads_img = array();
+    if (is_array($_FILES) && count($_FILES) > 0) {
+        foreach ($_FILES as $n => $f) {
+            if ($f["name"] != "") {
+                $name_file = time() . "-" . basename($f["name"]);
+                $name_file = str_replace(" ", "_", $name_file);
+                $target_file = $target_dir . $name_file;
+                if (move_uploaded_file($f["tmp_name"], $target_file)) {
+                    $uploads_img[$n] = $name_file;
+                } else {
+                    echo "Sorry, there was an error uploading your file.";
+                }
+            }
+        }
+    }
     require_once rtrim($_SERVER['DOCUMENT_ROOT'], DIRECTORY_SEPARATOR) . '/phpformbuilder/database/Mysql.php';
     $db = new Mysql();
 
     $update['idEncuesta'] = Mysql::SQLValue($_POST['idEncuesta']);
-    
     foreach($all_fields as $row)
     {
-        if($row['FieldName'] == 'UploadedImages')
+        if($row['Type'] == 'file-image')
         {
             $uploaded_images = json_encode($_POST[$row['FieldName']]);
-            $update[$row['FieldName']] = Mysql::SQLValue($uploaded_images);
+            if (array_key_exists($row['FieldName'], $uploads_img)) {
+                $update[$row['FieldName']] = Mysql::SQLValue($uploads_img[$row['FieldName']]);
+            }
         }
         else
         {
-            $update[$row['FieldName']] = Mysql::SQLValue($_POST[$row['FieldName']]);            
+            $update[$row['FieldName']] = Mysql::SQLValue($_POST[$row['FieldName']]);
         }
     }
 
