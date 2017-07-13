@@ -88,6 +88,15 @@ if($_SERVER["REQUEST_METHOD"] == "GET"){
     $idEncuesta = $_POST['idEncuesta'] ;    
 }
 
+
+$s_query = "Select * FROM Encuesta e join Local l on e.idLocal = l.idLocal WHERE idEncuesta = " . $idEncuesta ;
+$result = mysql_query($s_query);
+$info_encuesta = null;
+while ($row = mysql_fetch_assoc($result)) {
+    $info_encuesta = $row;
+}
+
+
 $s_query = "Select * From Formulario Where idForm = '" . $idFormulario . "'";
 $result = mysql_query($s_query);
 $info_formulario = null;
@@ -107,7 +116,7 @@ if($info_formulario['NextFormId'] != null && $info_formulario['NextFormId'] != '
     $next_page = 'encuesta.php?ecid=' . $idEncuesta . '&fid=' . $info_formulario['NextFormId'];
 }
 
-$page_title = $info_formulario['Descripcion'];
+$page_title = $info_formulario['Descripcion'] . " - Local: " . $info_encuesta["Local"];
 
 $form_id = 'sm-form-'.$table_name;
 
@@ -143,7 +152,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 if (move_uploaded_file($f["tmp_name"], $target_file)) {
                     $uploads_img[$n] = $name_file;
                 } else {
-                    echo "Sorry, there was an error uploading your file.";
+                    echo "Hubo un problema al cargar la foto.";
                 }
             }
         }
@@ -152,6 +161,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $db = new Mysql();
 
     $update['idEncuesta'] = Mysql::SQLValue($_POST['idEncuesta']);
+
     foreach($all_fields as $row)
     {
         if($row['Type'] == 'file-image')
@@ -180,6 +190,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     $error_msg = '';
+
     // Execute Insert or Update sentence
     if(!mysql_query( $sql, $link )) {
         $error_msg = 'Mensaje: </br>' . mysql_error();
@@ -421,18 +432,20 @@ $form_html .= '</form >';
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <link href="./assets/css/fileinput-rtl.min.css" rel="stylesheet">
     <link href="./assets/css/fileinput.min.css" rel="stylesheet">
-    <style> .none { display:none; }
-    .button {
-    display: block;
-    width: 115px;
-    height: 35px;
-    background: #4E9CAF;
-    padding: 10px;
-    text-align: center;
-    border-radius: 5px;
-    color: white;
-    font-weight: bold;
-} </style>
+    <style> 
+        .none { display:none; }
+        .button {
+            display: block;
+            width: 115px;
+            height: 35px;
+            background: #4E9CAF;
+            padding: 10px;
+            text-align: center;
+            border-radius: 5px;
+            color: white;
+            font-weight: bold;
+        } 
+    </style>
 </head>
 <body>
     <?php include "enc-menu.php"; ?>
