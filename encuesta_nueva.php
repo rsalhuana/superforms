@@ -8,7 +8,7 @@ $_SESSION['current_step'] = '';
 include 'dbconnect.php';
 include_once rtrim($_SERVER['DOCUMENT_ROOT'], DIRECTORY_SEPARATOR) . '/phpformbuilder/Form.php';
 
-$msg_welcome = '<p class="alert alert-info"> Bienvenido: ' . $_SESSION['userfullname']. '</p>' . "\n";
+$msg_welcome = 'Bienvenido: ' . $_SESSION['userfullname'];
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && Form::testToken('sm-encuesta-nueva-form') === true) 
 {
@@ -18,6 +18,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && Form::testToken('sm-encuesta-nueva-f
     $local_id = $_POST['local'];
     $tipolocal_id = $_POST['tipolocal'];
 
+    $msg = '';
+
+    if($local_id == null || $local_id == ''){
+        $msg = "Debe seleccionar un local</br>";
+    }
+
+    if($tipolocal_id == null || $tipolocal_id == ''){
+        $msg .= "Debe seleccionar un Tipo de Local</br>";
+    }
+
+    if($semana_id == null || $semana_id == ''){
+        $msg .= "Debe seleccionar una Semana</br>";
+    }
+    
     $db = new Mysql();
 
     $s_query = "Select * From Encuesta Where idSemana = '" . $semana_id 
@@ -42,7 +56,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && Form::testToken('sm-encuesta-nueva-f
             header("Location: encuesta.php?ecid=" . $fila['idEncuesta'] . '&fid=' . $next_form);
             exit();
         }
-        $msg_it_already_exists = '<p class="alert alert-danger">Ya se realizó una encuesta para ese local.</p>';
+        //$msg_it_already_exists = '<p class="alert alert-danger">Ya se realizó una encuesta para ese local.</p>';
+        $msg_it_already_exists = 'Ya se realizó una encuesta para ese local.';
     }
 
     if($msg_it_already_exists == ''){
@@ -59,8 +74,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && Form::testToken('sm-encuesta-nueva-f
         
         if(!mysql_query( $sql, $link ))
         {
-            $msg = '<p class="alert alert-danger"> Mensaje: <br>' . mysql_error(). '</p>' . "\n";
-            echo $msg;
+            $msg =. mysql_error(). "\n";
+            //echo $msg;
         }
         else
         {
@@ -116,7 +131,7 @@ $form->addHtml('<option value="">Seleccione Local</option>');
 $form->addHtml('</select></p>');
 
 $form->addHtml('<p><select name="tipolocal" id="tipolocal">');
-//$form->addHtml('<option value="">Seleccione Tipo Local</option>');
+$form->addHtml('<option value="">Seleccione Tipo Local</option>');
 $form->addHtml('<option value="TIP01">Multicategoria</option>');
 $form->addHtml('<option value="TIP02">Envase Descartable</option>');
 $form->addHtml('<option value="TIP03">Sanitario</option>');
@@ -153,24 +168,29 @@ mysql_close($link);
         </script>
 </head>
 <body>
-     <?php include "enc-menu.php"; ?>
-
-    <?php echo $msg_welcome; ?>
     <?php 
+    include "enc-menu.php"; 
+
+    echo '<p class="alert alert-info">' $msg_welcome . '</p>';
+    
     if($msg_it_already_exists != '') {
-        echo $msg_it_already_exists;
+        echo '<p class="alert alert-info">' . $msg_it_already_exists . '</p>';
     }
-    ?>
-    <center> <img src="LOGO_HORIZONTAL.png" width="300px"> 
-    <h3>Nueva Encuesta</h3></center>
+    if($msg != ''){ 
+        echo '<p class="alert alert-danger">' . $msg . '</p>'; 
+    } 
+    ?> 
+    
+    <center> 
+        <img src="LOGO_HORIZONTAL.png" width="300px"> 
+        <h3>Nueva Encuesta</h3>
+    </center>
+
     <div class="container">
         <div class="row">
             <div class="col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2">
             <?php
-            if (isset($sent_message)) {
-                echo $sent_message;
-            }
-            $form->render();
+                $form->render();
             ?>
             </div>
         </div>
