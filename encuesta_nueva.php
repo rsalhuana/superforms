@@ -4,7 +4,7 @@ use phpformbuilder\database\Mysql;
 
 session_start();
 $_SESSION['current_step'] = '';
-//<include 'check_session.php';
+include 'check_session.php';
 include 'dbconnect.php';
 include_once rtrim($_SERVER['DOCUMENT_ROOT'], DIRECTORY_SEPARATOR) . '/phpformbuilder/Form.php';
 
@@ -74,7 +74,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && Form::testToken('sm-encuesta-nueva-f
         
         if(!mysql_query( $sql, $link ))
         {
-            $msg =. mysql_error(). "\n";
+            $msg .= mysql_error(). "\n";
             //echo $msg;
         }
         else
