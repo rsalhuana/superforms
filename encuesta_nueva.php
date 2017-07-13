@@ -21,7 +21,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && Form::testToken('sm-encuesta-nueva-f
     $msg = '';
 
     if($local_id == null || $local_id == ''){
-        $msg = "Debe seleccionar un local</br>";
+        $msg = "Debe seleccionar un Local</br>";
     }
 
     if($tipolocal_id == null || $tipolocal_id == ''){
@@ -31,67 +31,70 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && Form::testToken('sm-encuesta-nueva-f
     if($semana_id == null || $semana_id == ''){
         $msg .= "Debe seleccionar una Semana</br>";
     }
+
+    if($msg == ''){
     
-    $db = new Mysql();
+        $db = new Mysql();
 
-    $s_query = "Select * From Encuesta Where idSemana = '" . $semana_id 
-                . "' AND idLocal = '" . $local_id . "'";
+        $s_query = "Select * From Encuesta Where idSemana = '" . $semana_id 
+                    . "' AND idLocal = '" . $local_id . "'";
 
-    $encuesta = mysql_query($s_query);
+        $encuesta = mysql_query($s_query);
 
-    $msg_it_already_exists = '';
-    while ($fila = mysql_fetch_assoc($encuesta)) {
-        if($fila['HoraFin'] == null || $fila['HoraFin'] == ''){
+        $msg_it_already_exists = '';
+        while ($fila = mysql_fetch_assoc($encuesta)) {
+            if($fila['HoraFin'] == null || $fila['HoraFin'] == ''){
 
-            $next_form = 'F001';
-            $tipolocal_id = $fila['idTipoLocal'];
-            if($tipolocal_id == 'TIP01'){ //Multicategoria
-                $next_form = 'F006';
-            } else if($tipolocal_id == 'TIP02'){ //Envase Descartable
-                $next_form = 'F008';
-            } else if($tipolocal_id == 'TIP03'){// Sanitario
                 $next_form = 'F001';
+                $tipolocal_id = $fila['idTipoLocal'];
+                if($tipolocal_id == 'TIP01'){ //Multicategoria
+                    $next_form = 'F006';
+                } else if($tipolocal_id == 'TIP02'){ //Envase Descartable
+                    $next_form = 'F008';
+                } else if($tipolocal_id == 'TIP03'){// Sanitario
+                    $next_form = 'F001';
+                }
+
+                header("Location: encuesta.php?ecid=" . $fila['idEncuesta'] . '&fid=' . $next_form);
+                exit();
             }
-
-            header("Location: encuesta.php?ecid=" . $fila['idEncuesta'] . '&fid=' . $next_form);
-            exit();
+            //$msg_it_already_exists = '<p class="alert alert-danger">Ya se realizó una encuesta para ese local.</p>';
+            $msg_it_already_exists = 'Ya se realizó una encuesta para ese local.';
         }
-        //$msg_it_already_exists = '<p class="alert alert-danger">Ya se realizó una encuesta para ese local.</p>';
-        $msg_it_already_exists = 'Ya se realizó una encuesta para ese local.';
-    }
 
-    if($msg_it_already_exists == ''){
-        date_default_timezone_set("America/Lima");
-        
-        $new_row['Fecha'] = Mysql::SQLValue(date("Y-m-d H:i:s"));
-        $new_row['HoraInicio'] = Mysql::SQLValue(date("h:i:sa"));
-        $new_row['idSemana'] = Mysql::SQLValue($semana_id);
-        $new_row['idTipoLocal'] = Mysql::SQLValue($tipolocal_id);
-        $new_row['idLocal'] = Mysql::SQLValue($local_id);
-        $new_row['user_insert'] = Mysql::SQLValue($_SESSION['username']);
+        if($msg_it_already_exists == ''){
+            date_default_timezone_set("America/Lima");
+            
+            $new_row['Fecha'] = Mysql::SQLValue(date("Y-m-d H:i:s"));
+            $new_row['HoraInicio'] = Mysql::SQLValue(date("h:i:sa"));
+            $new_row['idSemana'] = Mysql::SQLValue($semana_id);
+            $new_row['idTipoLocal'] = Mysql::SQLValue($tipolocal_id);
+            $new_row['idLocal'] = Mysql::SQLValue($local_id);
+            $new_row['user_insert'] = Mysql::SQLValue($_SESSION['username']);
 
-        $sql = $db->buildSQLInsert('Encuesta', $new_row);
-        
-        if(!mysql_query( $sql, $link ))
-        {
-            $msg .= mysql_error(). "\n";
-            //echo $msg;
-        }
-        else
-        {
-            $last_id = mysql_insert_id();
-            $next_form = 'F001';
-
-            if($tipolocal_id == 'TIP01'){ //Multicategoria
-                $next_form = 'F006';
-            } else if($tipolocal_id == 'TIP02'){ //Envase Descartable
-                $next_form = 'F008';
-            } else if($tipolocal_id == 'TIP03'){// Sanitario
+            $sql = $db->buildSQLInsert('Encuesta', $new_row);
+            
+            if(!mysql_query( $sql, $link ))
+            {
+                $msg .= mysql_error(). "\n";
+                //echo $msg;
+            }
+            else
+            {
+                $last_id = mysql_insert_id();
                 $next_form = 'F001';
-            }
 
-            header("Location: encuesta.php?ecid=" . $last_id . '&fid=' . $next_form);
-            exit();
+                if($tipolocal_id == 'TIP01'){ //Multicategoria
+                    $next_form = 'F006';
+                } else if($tipolocal_id == 'TIP02'){ //Envase Descartable
+                    $next_form = 'F008';
+                } else if($tipolocal_id == 'TIP03'){// Sanitario
+                    $next_form = 'F001';
+                }
+
+                header("Location: encuesta.php?ecid=" . $last_id . '&fid=' . $next_form);
+                exit();
+            }
         }
     }
 }
