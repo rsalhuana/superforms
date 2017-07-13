@@ -209,7 +209,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $error_msg = 'Mensaje: </br>' . mysql_error();
         } else {
             $_SESSION['current_step'] = '';
-            header("Location: /" . $next_page);
+            header("Location: success.php");
             exit();
         }
     }
