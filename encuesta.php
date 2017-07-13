@@ -111,7 +111,7 @@ if($info_formulario['PreviousFormId'] != null && $info_formulario['PreviousFormI
     $previous_page = 'encuesta.php?ecid=' . $idEncuesta . '&fid=' . $info_formulario['PreviousFormId'];
 }
 
-$next_page = 'encuesta_nueva.php';
+$next_page = '';
 if($info_formulario['NextFormId'] != null && $info_formulario['NextFormId'] != ''){
     $next_page = 'encuesta.php?ecid=' . $idEncuesta . '&fid=' . $info_formulario['NextFormId'];
 }
@@ -209,7 +209,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $error_msg = 'Mensaje: </br>' . mysql_error();
         } else {
             $_SESSION['current_step'] = '';
-            header("Location: success.php");
+            header('Location: success.php?ecid=' . $idEncuesta);
             exit();
         }
     }

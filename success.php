@@ -1,4 +1,12 @@
 <?php
+session_start();
+include 'check_session.php';
+include 'dbconnect.php';
+
+if($_SERVER["REQUEST_METHOD"] == "GET"){
+    $idEncuesta = $_GET['ecid'] ;    
+}
+
 $nombre_local = '';
 $s_query = "Select * FROM Encuesta e join Local l on e.idLocal = l.idLocal WHERE idEncuesta = " . $idEncuesta ;
 $result = mysql_query($s_query);
@@ -35,13 +43,13 @@ $nombre_local = $info_encuesta["Local"];
 
 
 
-    <center><img class="text-center" src="img/suma-logo-upd.png" width="200" height="70">
     <div class="container">
         <div class="row">
             <div class="col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2">
-            <h1>
-                <?php echo 'La encuesta fue grabada satisfactoriamente para el local ' . $nombre_local; ?>
-            </h1>
+            <center> <img src="LOGO_HORIZONTAL.png" width="300px"> </center>
+            <h3>
+                <?php echo 'La encuesta fue grabada satisfactoriamente para el local: </br><b>' . $nombre_local . '</b>'; ?>
+            </h3>
             </div>
         </div>
     </div>
