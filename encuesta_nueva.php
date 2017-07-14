@@ -121,9 +121,9 @@ $form->addHtml('<option value="">Seleccione Ciudad</option>');
 $departamentos = mysql_query("Select * From Ciudad Where Activo = 'Y'");
 while ($row = mysql_fetch_assoc($departamentos)) {
     $selected_att = '';
-    if($ciudad_id == $row['idCiudad']){
+    /*if($ciudad_id == $row['idCiudad']){
         $selected_att = 'selected';
-    }
+    }*/
 
     $form->addHtml('<option value="'.$row['idCiudad'].'"' . $selected_att . '>'.$row['Ciudad'].'</option>');
 }
