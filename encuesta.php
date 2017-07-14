@@ -32,7 +32,7 @@ function addTextarea($name, $value = '', $label = '', $attr = '', $required = 0)
 function addFileImage($name, $value = '', $label = '', $attr = '')
 {
     $label = '<label for="' . $name . '">' . $label . '</label>';
-    $element = '<input name="' . $name . '" type="file"  class="input-file-img" ' . $attr . ' />';
+    $element = '<input name="' . $name . '" type="file"  class="input-file-img" required ' . $attr . ' />';
     return $label . '<div>' . $element . '</div>';
 }
 
@@ -244,7 +244,7 @@ while ($r = mysql_fetch_assoc($result)) {
 /* ==================================================
     The Form
 ================================================== */
-$form_html = '<form enctype="multipart/form-data" action="" method="post" onsubmit="return(validate());">';
+$form_html = '<form enctype="multipart/form-data" action="" method="post">';
 $form_html .= addInput('hidden', 'idEncuesta', $idEncuesta, '', '');
 $form_html .= addInput('hidden', 'idFormulario', $idFormulario, '', '');
 
@@ -507,15 +507,6 @@ $form_html .= '</form >';
     <script src="./assets/js/locales/es.js"></script>
     
     <script type="text/javascript">
-        function validate(){
-            if($('#upload')[0].files.length === 0){
-                alert("Attachment Required");
-                $('#upload').focus();
-
-                return false;
-            }
-        }
-
         $(document).ready(function () {
  
             $(".input-file-img").fileinput({
