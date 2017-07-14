@@ -308,7 +308,9 @@ foreach($all_fields as $row){
         $the_value = $existing_info[$row['FieldName']];
     }
 
-    if($row['Type'] == 'radio')
+    if($row['FieldName'] == 'NOBLE_PAPEL_HIGIENICO_INSTITUCIONAL' && $info_encuesta["idCiudad"] != 'CIU11'){
+        // hacer nada
+    }else if($row['Type'] == 'radio')
     {
         $form_html .= '<div class="form-group">';
         $form_html .= '<label for="' . $row['FieldName'] . '">' . $row['Description'] . '</label>';
