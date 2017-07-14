@@ -169,6 +169,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $update['idEncuesta'] = Mysql::SQLValue($_POST['idEncuesta']);
 
+    /*if($idFormulario == 'F004'){
+        foreach($all_fields as $row)
+        {
+            if($row['Type'] == 'file-image'){
+
+            }
+        }    
+    }*/
+
     foreach($all_fields as $row)
     {
         if($row['Type'] == 'file-image')
@@ -235,7 +244,7 @@ while ($r = mysql_fetch_assoc($result)) {
 /* ==================================================
     The Form
 ================================================== */
-$form_html = '<form enctype="multipart/form-data" action="" method="post" >';
+$form_html = '<form enctype="multipart/form-data" action="" method="post" onsubmit="return(validate());">';
 $form_html .= addInput('hidden', 'idEncuesta', $idEncuesta, '', '');
 $form_html .= addInput('hidden', 'idFormulario', $idFormulario, '', '');
 
@@ -498,7 +507,17 @@ $form_html .= '</form >';
     <script src="./assets/js/locales/es.js"></script>
     
     <script type="text/javascript">
+        function validate(){
+            if($('#upload')[0].files.length === 0){
+                alert("Attachment Required");
+                $('#upload').focus();
+
+                return false;
+            }
+        }
+
         $(document).ready(function () {
+ 
             $(".input-file-img").fileinput({
                 'showUpload': false
             });
