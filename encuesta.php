@@ -88,12 +88,19 @@ if($_SERVER["REQUEST_METHOD"] == "GET"){
     $idEncuesta = $_POST['idEncuesta'] ;    
 }
 
-
 $s_query = "Select * FROM Encuesta e join Local l on e.idLocal = l.idLocal WHERE idEncuesta = " . $idEncuesta ;
 $result = mysql_query($s_query);
 $info_encuesta = null;
 while ($row = mysql_fetch_assoc($result)) {
     $info_encuesta = $row;
+}
+
+$s_query = "Select * From Distribuidora Where idCiudad = '" . $info_encuesta["idCiudad"] . "'";
+//$s_query = "Select * From Formulario Where idForm = '" . $idFormulario . "'";
+$result = mysql_query($s_query);
+$distribuidoras = null;
+while ($row = mysql_fetch_assoc($result)) {
+    $distribuidoras[] = $row;
 }
 
 
@@ -321,6 +328,20 @@ foreach($all_fields as $row){
         foreach ($rb_options as $option) {
             $form_html .= addOption($row['FieldName'], $option, $option, '');
         }
+        $form_html .= '</select>';
+        $form_html .= '</div></div>';
+    }
+    else if($row['Type'] == 'select_distribuidor')
+    {
+        $form_html .= '<div class="form-group">';
+        $form_html .= '<label for="' . $row['FieldName'] . '">' . $row['Description'] . '</label>';
+        $form_html .= '<div>';
+        $form_html .= '<select class="form-control" name="' . $row['FieldName'] . '">';
+        
+        foreach ($distribuidoras as $option) {
+            $form_html .= addOption($row['FieldName'], $option["idDistribuidora"], $option["Nombre"], '');
+        }
+        
         $form_html .= '</select>';
         $form_html .= '</div></div>';
     }
