@@ -5,7 +5,7 @@ $(document).ready(function(){
                     $.ajax({
                         type:'POST',
                         url:'getUbigeoData.php',
-                        data:'ciudad='+ciudadID,
+                        data:'ciudad_id='+ciudadID,
                         success:function(html){
                             if(ciudadID != 'CIU11'){
                                 //$('#distrito').html('<option value=""> - </option>');                         
@@ -34,7 +34,7 @@ $(document).ready(function(){
                     $.ajax({
                         type:'POST',
                         url:'getUbigeoData.php',
-                        data:'distrito='+distritoID,
+                        data:'distrito_id='+distritoID,
                         success:function(html){
                             $('#local').show();
                             $('#local').html(html);
