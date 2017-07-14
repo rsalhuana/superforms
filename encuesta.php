@@ -32,7 +32,7 @@ function addTextarea($name, $value = '', $label = '', $attr = '', $required = 0)
 function addFileImage($name, $value = '', $label = '', $attr = '')
 {
     $label = '<label for="' . $name . '">' . $label . '</label>';
-    $element = '<input name="' . $name . '" type="file"  class="input-file-img" required ' . $attr . ' />';
+    $element = '<input name="' . $name . '" type="file"  class="input-file-img" ' . $attr . ' />';
     return $label . '<div>' . $element . '</div>';
 }
 
@@ -364,7 +364,8 @@ foreach($all_fields as $row){
     }
     else if($row['Type'] == 'file-image')
     {
-        $form_html .= addFileImage($row['FieldName'], $the_value, $row['Description'], '');
+        $attr = $row['IsRequired'] == 1 ? 'required' : '';
+        $form_html .= addFileImage($row['FieldName'], $the_value, $row['Description'], $attr);
     }
     else if($row['Type'] == 'input-text')
     {
