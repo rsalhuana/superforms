@@ -18,6 +18,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && Form::testToken('sm-encuesta-nueva-f
     $local_id = $_POST['local'];
     $tipolocal_id = $_POST['tipolocal'];
 
+    $ciudad_id = $_POST['ciudad'];
+    $distrito_id = $_POST['distrito'];
+
     $msg = '';
 
     if($local_id == null || $local_id == ''){
@@ -109,7 +112,12 @@ $form->addHtml('<option value="">Seleccione Ciudad</option>');
 
 $departamentos = mysql_query("Select * From Ciudad Where Activo = 'Y'");
 while ($row = mysql_fetch_assoc($departamentos)) {
-    $form->addHtml('<option value="'.$row['idCiudad'].'">'.$row['Ciudad'].'</option>');
+    $selected_att = '';
+    if($ciudad_id == $row['idCiudad']){
+        $selected_att = 'selected';
+    }
+
+    $form->addHtml('<option value="'.$row['idCiudad'].'"' . $selected_att . '>'.$row['Ciudad'].'</option>');
 }
 
 $form->addHtml('</select></p>');
