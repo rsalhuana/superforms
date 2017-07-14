@@ -23,12 +23,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && Form::testToken('sm-encuesta-nueva-f
 
     $msg = '';
 
+    if($ciudad_id == null || $ciudad_id == ''){
+        $msg .= "Debe seleccionar la Ciudad</br>";
+    }
+
+    if($distrito_id == null || $distrito_id == ''){
+        $msg .= "Debe seleccionar el Distrito</br>";
+    }
+
     if($local_id == null || $local_id == ''){
-        $msg = "Debe seleccionar un Local</br>";
+        $msg .= "Debe seleccionar un Local</br>";
     }
 
     if($tipolocal_id == null || $tipolocal_id == ''){
-        $msg .= "Debe seleccionar un Tipo de Local</br>";
+        $msg .= "Debe seleccionar el Tipo de Local</br>";
     }
 
     if($semana_id == null || $semana_id == ''){
