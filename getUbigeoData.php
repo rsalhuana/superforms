@@ -14,6 +14,10 @@ if(isset($_POST["ciudad_id"]) && !empty($_POST["ciudad_id"]) && $_POST["ciudad_i
     $Distritos = mysql_query("select * from Distrito where idCiudad = '" .  $_POST['ciudad_id'] . "' Order by Distrito ASC");
     echo '<option value="">Seleccione Distrito</option>';
     while ($row = mysql_fetch_assoc($Distritos)) {
+        $selected_att = '';
+        if($distrito_id == $row['idDistrito']){
+            $selected_att = 'selected';
+        }
         echo '<option value="'.$row['idDistrito'].'">'.$row['Distrito'].'</option>';
     }
 }
