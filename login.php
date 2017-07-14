@@ -33,6 +33,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && Form::testToken('sm-login-form') ===
             }
             else
             {
+                $_SESSION['userid'] = $db_user['idUsuario']; 
                 $_SESSION['username'] = $db_user['usuario']; 
                 $_SESSION['userfullname'] = $db_user['Nombre'] . ' ' . $db_user['Apellido']; 
 
