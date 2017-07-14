@@ -4,7 +4,7 @@ include 'dbconnect.php';
 session_start();
 
 if(isset($_POST["ciudad_id"]) && !empty($_POST["ciudad_id"]) && $_POST["ciudad_id"] != 'CIU11'){
-    $locales = mysql_query("select * from Local where idCiudad = '" .  $_POST['ciudad_id'] . "' Order by Local ASC");
+    $locales = mysql_query("select * from Local l Join Asignacion a on l.idLocal = a.idLocal where idCiudad = '" .  $_POST['ciudad_id'] . "' AND a.idUsuario = ". $_SESSION['userid'] . " Order by Local ASC");
     echo '<option value="">Seleccione Local</option>';
     while ($row = mysql_fetch_assoc($locales)) {
         echo '<option value="'.$row['idLocal'].'">'.$row['Local'].'</option>';
