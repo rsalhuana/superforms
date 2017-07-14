@@ -62,7 +62,7 @@ function addRadio($name, $value = '', $label = '', $attr = '', $required = 0)
 
 function addOption($name, $value = '', $label = '', $attr = '')
 {
-    return '<option name="' . $name . '" value="' . $value . '" ' . $attr . ' >' . $value . '</option>';
+    return '<option name="' . $name . '" value="' . $value . '" ' . $attr . ' >' . $label . '</option>';
 }
 
 function addInputText($name, $value = '', $label = '', $attr = '')
@@ -341,7 +341,7 @@ foreach($all_fields as $row){
         foreach ($distribuidoras as $option) {
             $form_html .= addOption($row['FieldName'], $option["idDistribuidora"], $option["Nombre"], '');
         }
-        
+
         $form_html .= '</select>';
         $form_html .= '</div></div>';
     }
