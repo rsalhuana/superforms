@@ -337,7 +337,7 @@ foreach($all_fields as $row){
         $form_html .= '<label for="' . $row['FieldName'] . '">' . $row['Description'] . '</label>';
         $form_html .= '<div>';
         $form_html .= '<select class="form-control" name="' . $row['FieldName'] . '">';
-        
+        $form_html .= addOption($row['FieldName'], "", "Selecciona una Distribuidora", '');
         foreach ($distribuidoras as $option) {
             $form_html .= addOption($row['FieldName'], $option["idDistribuidora"], $option["Nombre"], '');
         }
