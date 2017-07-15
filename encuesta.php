@@ -51,13 +51,22 @@ function addHtml($html)
     return $html;
 }
 
+// function addRadio($name, $value = '', $label = '', $attr = '', $required = 0)
+// {
+//     $required_html = '';
+//     if ($required == 1) {
+//         $required_html = 'required';
+//     }
+//     return '<input type="radio" id="' . $name .'_'.$value . '" name="' . $name . '" value="' . $value . '" ' . $attr . ' ' . $required_html . ' >' . $value . ' ';
+// }
+
 function addRadio($name, $value = '', $label = '', $attr = '', $required = 0)
 {
     $required_html = '';
     if ($required == 1) {
         $required_html = 'required';
     }
-    return '<input type="radio" id="' . $name .'_'.$value . '" name="' . $name . '" value="' . $value . '" ' . $attr . ' ' . $required_html . ' >' . $value . ' ';
+    return '<input type="radio" id="' . $name . '" name="' . $name . '" value="' . $value . '" ' . $attr . ' ' . $required_html . ' >' . $value . ' ';
 }
 
 function addOption($name, $value = '', $label = '', $attr = '')
@@ -297,15 +306,15 @@ foreach($all_fields as $row){
 
     $isRequired = $row['IsRequired'] == 1 ? 'required' : '';        
 
-    // if($row['RequiredIf'] != null && $row['RequiredIf'] != '')
-    // {
-    //     //$isRequired = '';
-    //     if($requiredIf != $row['RequiredIf'])
-    //     {
-    //         $requiredIf = $row['RequiredIf'];
-    //         $form_html .= startDependantFields($requiredIf, 'Si');
-    //     }
-    // }
+    if($row['RequiredIf'] != null && $row['RequiredIf'] != '')
+    {
+        //$isRequired = '';
+        if($requiredIf != $row['RequiredIf'])
+        {
+            $requiredIf = $row['RequiredIf'];
+            $form_html .= startDependantFields($requiredIf, 'Si');
+        }
+    }
 
     $the_value = '';
 
@@ -470,6 +479,13 @@ $form_html .= '</form >';
     <link href="./assets/css/fileinput-rtl.min.css" rel="stylesheet">
     <link href="./assets/css/fileinput.min.css" rel="stylesheet">
     <style> 
+        .error {
+            display: list-item;
+            max-width: 100%;
+            margin-bottom: 5px;
+            font-weight: 700;
+            color:red;
+        }
         .none { display:none; }
         .button {
             display: block;
@@ -482,10 +498,7 @@ $form_html .= '</form >';
             color: white;
             font-weight: bold;
         } 
-        div.error{
-            font-weight:normal;
-            color:#FF0000 !important;
-        }
+       
     </style>
 </head>
 <body>
@@ -500,7 +513,6 @@ $form_html .= '</form >';
     }
 
     ?>
-    <div id="errors"></div>
     <center> <img src="LOGO_HORIZONTAL.png" width="300px"> </center>
     <h3 class="text-center"><?php echo $page_title; ?></h3>
     <div class="container">
