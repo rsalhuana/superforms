@@ -244,7 +244,7 @@ while ($r = mysql_fetch_assoc($result)) {
 /* ==================================================
     The Form
 ================================================== */
-$form_html = '<form enctype="multipart/form-data" action="" method="post">';
+$form_html = '<form id="frmenc" enctype="multipart/form-data" action="" method="post">';
 $form_html .= addInput('hidden', 'idEncuesta', $idEncuesta, '', '');
 $form_html .= addInput('hidden', 'idFormulario', $idFormulario, '', '');
 
@@ -513,6 +513,22 @@ $form_html .= '</form >';
     
     <script type="text/javascript">
         $(document).ready(function () {
+
+        $('#frmenc').validate({ // initialize the plugin
+            rules: {
+                MontoBoleta1: {
+                    required: {
+                        depends: function (element) {
+                            return $("#MontoBoleta2").is(":filled");
+                        }
+                    }
+                }
+            },
+            submitHandler: function (form) { // for demo
+                alert('valid form submitted'); // for demo
+                return false; // for demo
+            }
+        });
  
             $(".input-file-img").fileinput({
                 'showUpload': false
