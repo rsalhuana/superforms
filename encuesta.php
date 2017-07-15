@@ -510,25 +510,25 @@ $form_html .= '</form >';
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="./assets/js/fileinput.min.js"></script>
     <script src="./assets/js/locales/es.js"></script>
-    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.16.0/jquery.validate.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
 
-        $('#frmenc').validate({ // initialize the plugin
-            rules: {
-                MontoBoleta1: {
-                    required: {
-                        depends: function (element) {
-                            return $("#MontoBoleta2").is(":filled");
+            $('#frmenc').validate({ // initialize the plugin
+                rules: {
+                    MontoBoleta1: {
+                        required: {
+                            depends: function (element) {
+                                return $("#MontoBoleta2").is(":filled");
+                            }
                         }
                     }
+                },
+                submitHandler: function (form) { // for demo
+                    alert('valid form submitted'); // for demo
+                    return false; // for demo
                 }
-            },
-            submitHandler: function (form) { // for demo
-                alert('valid form submitted'); // for demo
-                return false; // for demo
-            }
-        });
+            });
  
             $(".input-file-img").fileinput({
                 'showUpload': false
