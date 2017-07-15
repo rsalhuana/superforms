@@ -32,13 +32,13 @@ function addTextarea($name, $value = '', $label = '', $attr = '', $required = 0)
 function addFileImage($name, $value = '', $label = '', $attr = '')
 {
     $label = '<label for="' . $name . '">' . $label . '</label>';
-    $element = '<input name="' . $name . '" type="file"  class="input-file-img" ' . $attr . ' />';
+    $element = '<input id="' . $name . '" name="' . $name . '" type="file"  class="input-file-img" ' . $attr . ' />';
     return $label . '<div>' . $element . '</div>';
 }
 
 function addInput($type, $name, $value = '', $label = '', $attr = '')
 {
-    return '<div class="col-sm-8"><input name="' . $name . '" type="' . $type . '" value="' . $value . '" ' . $attr . '></div>';
+    return '<div class="col-sm-8"><input id = "' . $name . '" name="' . $name . '" type="' . $type . '" value="' . $value . '" ' . $attr . '></div>';
 }
 
 function addSubmitBtn($type, $value = 'Enviar', $attr = '', $next_page = '')
@@ -67,7 +67,7 @@ function addOption($name, $value = '', $label = '', $attr = '')
 
 function addInputText($name, $value = '', $label = '', $attr = '')
 {
-    return '<input type="text" class="form-control" name="' . $name . '" value="' . $value . '" ' . $attr . ' />';
+    return '<input type="text" class="form-control" id = "' . $name . '" name="' . $name . '" value="' . $value . '" ' . $attr . ' />';
 }
 
 function addInputCurrency($name, $value = '', $label = '', $attr = '', $required = 0)
@@ -76,7 +76,7 @@ function addInputCurrency($name, $value = '', $label = '', $attr = '', $required
     if ($required == 1) {
         $required_html = 'required';
     }
-    return '<input type="text" class="form-control onlyDecimal" name="' . $name . '" value="' . $value . '" ' . $attr . ' ' . $required_html . ' />';
+    return '<input type="text" class="form-control onlyDecimal" id = "' . $name . '" name="' . $name . '" value="' . $value . '" ' . $attr . ' ' . $required_html . ' />';
 }
 
 if($_SERVER["REQUEST_METHOD"] == "GET"){
@@ -261,6 +261,8 @@ foreach($all_fields as $row){
     if($row['FieldName'] == 'NOBLE_PAPEL_HIGIENICO_INSTITUCIONAL' && $info_encuesta["idCiudad"] != 'CIU11'){
         continue;
     }
+
+    //$form_html .= addHtml('<label for="' . $row['FieldName'] . '" class="error">Please select at least two types of spam.</label>');
 
     if($requiredIf != '' && ($requiredIf != $row['RequiredIf'] || $row['RequiredIf'] == null))
     {
@@ -510,22 +512,40 @@ $form_html .= '</form >';
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="./assets/js/fileinput.min.js"></script>
     <script src="./assets/js/locales/es.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.16.0/jquery.validate.js"></script>
+    
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
+
     <script type="text/javascript">
         $(document).ready(function () {
+            //jQuery.validator.format("{0} debe tener un valor");
 
             $('#frmenc').validate({ // initialize the plugin
                 rules: {
+                    Foto1: {
+                        required: {
+                            depends: function (element) {
+                                return $("#MontoBoleta1").is(":filled");//return $("#Distribuidor1").val().length > 0;
+                            }
+                        }
+                    },
                     MontoBoleta1: {
                         required: {
                             depends: function (element) {
-                                return $("#MontoBoleta2").is(":filled");
+                                return $("#Foto1").is(":filled");//return $("#Distribuidor1").val().length > 0;
+                            }
+                        }
+                    },
+                    Distribuidor1: {
+                        required: {
+                            depends: function (element) {
+                                return $("#MontoBoleta1").is(":filled");
                             }
                         }
                     }
                 },
                 submitHandler: function (form) { // for demo
-                    alert('valid form submitted'); // for demo
+                    //alert('valid form submitted'); // for demo
                     return false; // for demo
                 }
             });
