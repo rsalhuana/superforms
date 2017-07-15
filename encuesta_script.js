@@ -161,27 +161,15 @@ $(document).ready(function () {
                             ||  $("#Foto6").is(":filled"));
                     }
                 }
-            },
-            Colgante: {
-                require_from_group: [1, ".materialpop-group"]
-            },
-            Jalavista: {
-                require_from_group: [1, ".materialpop-group"]
-            },
-            TachoDispensador: {
-                require_from_group: [1, ".materialpop-group"]
-            },
-            BannerToldo: {
-                require_from_group: [1, ".materialpop-group"]
             }
         },
         // groups: {
         //     materialpopgroup: "Colgante Jalavista TachoDispensador BannerToldo"
         // },
         messages: {
-            Colgante: {
-                 required: "Seleccionar al menos 1 de estas opciones."
-            },
+            // Colgante: {
+            //      required: "Seleccionar al menos 1 de estas opciones."
+            // },
             Foto1: {
                 required: "Agregue la foto correspondiente."
             },
@@ -242,21 +230,21 @@ $(document).ready(function () {
     $(".input-file-img").fileinput({
         'showUpload': false
     });
-    $("input[name='Colgante'],input[name='Jalavista'],input[name='TachoDispensador'],input[name='BannerToldo']").click(function() {
-        var isChecked = false;
-        $("input[name='Colgante'],input[name='Jalavista'],input[name='TachoDispensador'],input[name='BannerToldo']").each(function() {
-            if($(this).is(':checked') && $(this).val() == 'Si') {
-                isChecked = true;
-            }
-        });
-        if (isChecked == true) {
-            alert('checked');
-            //$('#MaterialPOP_Si').prop("checked", true);
-        } else {
-            alert('not checked');
-            //$('#MaterialPOP_No').prop("checked", true);
-        }
-    });
+    // $("input[name='Colgante'],input[name='Jalavista'],input[name='TachoDispensador'],input[name='BannerToldo']").click(function() {
+    //     var isChecked = false;
+    //     $("input[name='Colgante'],input[name='Jalavista'],input[name='TachoDispensador'],input[name='BannerToldo']").each(function() {
+    //         if($(this).is(':checked') && $(this).val() == 'Si') {
+    //             isChecked = true;
+    //         }
+    //     });
+    //     if (isChecked == true) {
+    //         alert('checked');
+    //         //$('#MaterialPOP_Si').prop("checked", true);
+    //     } else {
+    //         alert('not checked');
+    //         //$('#MaterialPOP_No').prop("checked", true);
+    //     }
+    // });
     $("input[name$='MaterialPOP']").click(function() {
         var answer = $(this).val();
         
