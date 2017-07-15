@@ -482,6 +482,10 @@ $form_html .= '</form >';
             color: white;
             font-weight: bold;
         } 
+        div.error{
+            font-weight:normal;
+            color:#FF0000 !important;
+        }
     </style>
 </head>
 <body>
@@ -496,6 +500,7 @@ $form_html .= '</form >';
     }
 
     ?>
+    <div id="errors"></div>
     <center> <img src="LOGO_HORIZONTAL.png" width="300px"> </center>
     <h3 class="text-center"><?php echo $page_title; ?></h3>
     <div class="container">
@@ -519,8 +524,26 @@ $form_html .= '</form >';
     <script type="text/javascript">
         $(document).ready(function () {
             //jQuery.validator.format("{0} debe tener un valor");
-
+            
             $('#frmenc').validate({ // initialize the plugin
+                //set this to false if you don't what to set focus on the first invalid input
+                focusInvalid: false,
+                //by default validation will run on input keyup and focusout
+                //set this to false to validate on submit only
+                onkeyup: false,
+                onfocusout: false,
+                highlight: function (element, errorClass) {
+                    $(element).closest('.form-group').addClass('has-error');
+                },
+                unhighlight: function (element, errorClass) {
+                    $(element).closest('.form-group').removeClass('has-error');
+                },
+                //by default the error elements is a <label>
+                errorElement: "div",
+                //place all errors in a <div id="errors"> element
+                errorPlacement: function(error, element) {
+                    error.appendTo("div#errors");
+                }, 
                 rules: {
                     Foto1: {
                         required: {
@@ -539,15 +562,38 @@ $form_html .= '</form >';
                     Distribuidor1: {
                         required: {
                             depends: function (element) {
-                                return $("#MontoBoleta1").is(":filled");
+                                return ($("#MontoBoleta1").is(":filled") ||  $("#Foto1").is(":filled"));
                             }
                         }
                     }
                 },
-                submitHandler: function (form) { // for demo
-                    //alert('valid form submitted'); // for demo
-                    return false; // for demo
+                 messages: {
+                    Foto1: {
+                        required: " Agregue la foto correspondiente."
+                    },
+                    MontoBoleta1: {
+                        required: " Indique el monto de la boleta."
+                    },
+                    Distribuidor1:{
+                        required: " Indique el distribuidor de la boleta."
+                    }
                 }
+                /*errorPlacement: function(errorMap, errorList) {
+                    $.each(this.successList, function(index, value) {
+                        return $(value).popover("hide");
+                    });
+                    return $.each(errorList, function(index, value) {
+                        var _popover;
+                        _popover = $(value.element).popover({
+                            trigger: "manual",
+                            placement: "auto",
+                            content: value.message,
+                            template: "<div class=\"popover\"><div class=\"arrow\"></div><div class=\"popover-inner\"><div class=\"popover-content\"><p></p></div></div></div>"
+                        });
+                        _popover.data("bs.popover").options.content = value.message;
+                        return $(value.element).popover("show");
+                    });
+                }*/
             });
  
             $(".input-file-img").fileinput({
