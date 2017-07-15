@@ -32,7 +32,14 @@ function addTextarea($name, $value = '', $label = '', $attr = '', $required = 0)
 function addFileImage($name, $value = '', $label = '', $attr = '')
 {
     $label = '<label for="' . $name . '">' . $label . '</label>';
-    $element = '<input id="' . $name . '" name="' . $name . '" type="file"  class="input-file-img" ' . $attr . ' />';
+
+    $element = '';
+    if($value != null && $value != ''){
+        $element = '<img src="uploads/' . $value . '" alt="" height="82">';
+        $attr = '';
+    }
+
+    $element .= '<input id="' . $name . '" name="' . $name . '" type="file"  class="input-file-img" ' . $attr . ' />';
     return $label . '<div>' . $element . '</div>';
 }
 
@@ -44,6 +51,10 @@ function addInput($type, $name, $value = '', $label = '', $attr = '')
 function addSubmitBtn($type, $value = 'Enviar', $attr = '', $next_page = '')
 {
     return '<button class="button" type="submit"> '.$value.' </button>';
+}
+function addBtn($type, $value = 'Enviar', $attr = '', $next_page = '')
+{
+    return '<a class="button" href="' . $next_page . '" > ' . $value . ' </a>';
 }
 
 function addHtml($html)
@@ -363,6 +374,10 @@ foreach($all_fields as $row){
         $form_html .= '<select class="form-control" name="' . $row['FieldName'] . '">';
         $form_html .= addOption($row['FieldName'], "", "Selecciona una Distribuidora", '');
         foreach ($distribuidoras as $option) {
+            $attr = '';
+            if($option["idDistribuidora"] == $the_value){
+                $attr = 'selected';
+            }
             $form_html .= addOption($row['FieldName'], $option["idDistribuidora"], $option["Nombre"], '');
         }
 
@@ -457,6 +472,7 @@ $form_html .= addHtml('      </div>');
 $form_html .= addHtml('    </div>');
 $form_html .= addHtml('  </div>');
 
+
 $form_html .= addSubmitBtn('submit', 'Siguiente', 'class=btn btn-success', $next_page);
 
 $form_html .= addHtml('  </div>') . "\n";
@@ -488,7 +504,7 @@ $form_html .= '</form >';
         }
         .none { display:none; }
         .button {
-            display: block;
+            display: inline-block;
             width: 115px;
             height: 35px;
             background: #4E9CAF;
@@ -497,6 +513,8 @@ $form_html .= '</form >';
             border-radius: 5px;
             color: white;
             font-weight: bold;
+            margin-bottom:5px;
+            margin-right: 5px;
         } 
        
     </style>
@@ -515,9 +533,18 @@ $form_html .= '</form >';
     ?>
     <center> <img src="LOGO_HORIZONTAL.png" width="300px"> </center>
     <h3 class="text-center"><?php echo $page_title; ?></h3>
+    
     <div class="container">
+   
             <div class="row">
             <div class="col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2">
+ <?php 
+    if($previous_page != ''){
+        echo addBtn('submit', 'Volver', 'class=btn btn-success', $previous_page);
+        //echo addSubmitBtn('submit', 'Siguiente', 'class=btn btn-success', $next_page);
+    }
+    ?>
+
     <?php echo $form_html; ?>
             
             </div>

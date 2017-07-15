@@ -1,6 +1,6 @@
 $(document).ready(function () {
     //jQuery.validator.format("{0} debe tener un valor");
-    
+    $.extend($.validator.messages, { required: "Este campo es obligatorio." });
     $('#frmenc').validate({ // initialize the plugin
         //set this to false if you don't what to set focus on the first invalid input
         focusInvalid: false,
