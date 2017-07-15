@@ -18,6 +18,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && Form::testToken('sm-encuesta-nueva-f
     $local_id = $_POST['local'];
     $tipolocal_id = $_POST['tipolocal'];
 
+    $LIMA_CIUDAD_ID = 'CIU11';
     $ciudad_id = $_POST['ciudad'];
     $distrito_id = $_POST['distrito'];
 
@@ -27,7 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && Form::testToken('sm-encuesta-nueva-f
         $msg .= "Debe seleccionar la Ciudad</br>";
     }
 
-    if($distrito_id == null || $distrito_id == ''){
+    if($ciudad_id == $LIMA_CIUDAD_ID && ($distrito_id == null || $distrito_id == '')){
         $msg .= "Debe seleccionar el Distrito</br>";
     }
 
@@ -132,8 +133,7 @@ $form->addHtml('</select></p>');
 
 $form->addHtml('<p><select name="distrito" id="distrito">');
 $form->addHtml('<option value="">Seleccione Distrito</option>');
-
-if(isset($_POST["ciudad"]) && !empty($_POST["ciudad"]) && $_POST["ciudad"] == 'CIU11'){
+if(isset($_POST["ciudad"]) && !empty($_POST["ciudad"]) && $_POST["ciudad"] == $LIMA_CIUDAD_ID){
     $Distritos = mysql_query("select * from Distrito where idCiudad = '" .  $_POST['ciudad'] . "' Order by Distrito ASC");
     while ($row = mysql_fetch_assoc($Distritos)) {
         $selected_att = '';
@@ -143,7 +143,6 @@ if(isset($_POST["ciudad"]) && !empty($_POST["ciudad"]) && $_POST["ciudad"] == 'C
         $form->addHtml('<option value="'.$row['idDistrito'].'" ' . $selected_att . '>'.$row['Distrito'].'</option>');
     }
 }
-
 $form->addHtml('</select></p>');
 
 $fecha_hoy = date("Y-m-d H:i:s");
@@ -160,12 +159,21 @@ $form->addHtml('</select></p>');
 $form->addHtml('<p><select name="local" id="local">');
 $form->addHtml('<option value="">Seleccione Local</option>');
 
-if(isset($_POST["distrito"]) && !empty($_POST["distrito"])){
+if(isset($_POST["ciudad"]) && !empty($_POST["ciudad"]) && $_POST["ciudad"] != $LIMA_CIUDAD_ID){
+    $locales = mysql_query("select * from Local l Join Asignacion a on l.idLocal = a.idLocal where idCiudad = '" .  $_POST['ciudad'] . "' AND a.idUsuario = ". $_SESSION['userid'] . " Order by Local ASC");
+    while ($row = mysql_fetch_assoc($locales)) {
+        $selected_att = '';
+        if($local_id == $row['idLocal']){
+            $selected_att = 'selected';
+        }
+        $form->addHtml('<option value="'.$row['idLocal'].'">'.$row['Local'].'</option>');
+    }
+}else if(isset($_POST["distrito"]) && !empty($_POST["distrito"])){
     //$locales = mysql_query("Select * FROM Local l Join Asignacion a on l.idLocal = a.idLocal WHERE idDistrito = '" . $_POST['distrito_id'] . "' AND a.idUsuario = '". $_SESSION['userid'] ."' AND a.idSemana = '" . $_POST['semana'] . "' Order by Local ASC");
     $locales = mysql_query("Select * FROM Local l Join Asignacion a on l.idLocal = a.idLocal WHERE idDistrito = '" . $_POST['distrito'] . "' AND a.idUsuario = ". $_SESSION['userid'] ." Order by Local ASC");
 
     while ($row = mysql_fetch_assoc($locales)) {
-         $selected_att = '';
+        $selected_att = '';
         if($local_id == $row['idLocal']){
             $selected_att = 'selected';
         }
