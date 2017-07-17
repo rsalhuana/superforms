@@ -174,55 +174,55 @@ $(document).ready(function () {
                 required: "Agregue la foto correspondiente."
             },
             MontoBoleta1: {
-                required: "Indique el monto de la boleta."
+                required: "Ingrese el monto de la boleta."
             },
             Distribuidor1:{
-                required: "Indique el distribuidor de la boleta."
+                required: "Seleccione la distribuidora."
             },
             Foto2: {
                 required: "Agregue la foto correspondiente."
             },
             MontoBoleta2: {
-                required: "Indique el monto de la boleta."
+                required: "Ingrese el monto de la boleta."
             },
             Distribuidor2:{
-                required: "Indique el distribuidor de la boleta."
+                required: "Seleccione la distribuidora."
             },
             Foto3: {
                 required: "Agregue la foto correspondiente."
             },
             MontoBoleta3: {
-                required: "Indique el monto de la boleta."
-            },
+                required: "Ingrese el monto de la boleta."
+            },  
             Distribuidor3:{
-                required: "Indique el distribuidor de la boleta."
+                required: "Seleccione la distribuidora."
             },
             Foto4: {
                 required: "Agregue la foto correspondiente."
             },
             MontoBoleta4: {
-                required: "Indique el monto de la boleta."
+                required: "Ingrese el monto de la boleta."
             },
             Distribuidor4:{
-                required: "Indique el distribuidor de la boleta."
+                required: "Seleccione la distribuidora."
             },
             Foto5: {
                 required: "Agregue la foto correspondiente."
             },
             MontoBoleta5: {
-                required: "Indique el monto de la boleta."
+                required: "Ingrese el monto de la boleta."
             },
             Distribuidor5:{
-                required: "Indique el distribuidor de la boleta."
+                required: "Seleccione la distribuidora."
             },
             Foto6: {
                 required: "Agregue la foto correspondiente."
             },
             MontoBoleta6: {
-                required: "Indique el monto de la boleta."
+                required: "Ingrese el monto de la boleta."
             },
             Distribuidor6:{
-                required: "Indique el distribuidor de la boleta."
+                required: "Seleccione la distribuidora."
             }
         }
     });
