@@ -50,11 +50,11 @@ function addInput($type, $name, $value = '', $label = '', $attr = '')
 
 function addSubmitBtn($type, $value = 'Enviar', $attr = '', $next_page = '')
 {
-    return '<button class="button" type="submit"> '.$value.' </button>';
+    return  '<a href="#" class="btn-page next">'.$value.'</a>';
 }
 function addBtn($type, $value = 'Enviar', $attr = '', $next_page = '')
 {
-    return '<a class="button" href="' . $next_page . '" > ' . $value . ' </a>';
+    return  '<a href="'.$next_page.'" class="btn-page previous">' . $value . '</a>';
 }
 
 function addHtml($html)
@@ -473,7 +473,11 @@ $form_html .= addHtml('    </div>');
 $form_html .= addHtml('  </div>');
 
 
-$form_html .= addSubmitBtn('submit', 'Siguiente', 'class=btn btn-success', $next_page);
+if ($previous_page != '') {
+    $form_html .= addBtn('submit', '&laquo; Volver', 'class=btn btn-success', $previous_page);
+}
+
+$form_html .= addSubmitBtn('submit', 'Siguiente &raquo;', 'class=btn btn-success', $next_page);
 
 $form_html .= addHtml('  </div>') . "\n";
 
@@ -516,6 +520,29 @@ $form_html .= '</form >';
             margin-bottom:5px;
             margin-right: 5px;
         } 
+        a.btn-page {
+            text-decoration: none;
+            display: inline-block;
+            padding: 8px 16px;
+        }
+
+        a:hover.btn-page {
+            background-color: #ddd;
+            color: black;
+        }
+        .previous {
+            background-color: #f1f1f1;
+            color: black;
+        }
+
+        .next {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .round {
+            border-radius: 50%;
+        }
        
     </style>
 </head>
@@ -538,15 +565,7 @@ $form_html .= '</form >';
    
             <div class="row">
             <div class="col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2">
- <?php 
-    if($previous_page != ''){
-        echo addBtn('submit', 'Volver', 'class=btn btn-success', $previous_page);
-        //echo addSubmitBtn('submit', 'Siguiente', 'class=btn btn-success', $next_page);
-    }
-    ?>
-
-    <?php echo $form_html; ?>
-            
+                <?php echo $form_html; ?>
             </div>
         </div>
     </div>
