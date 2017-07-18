@@ -50,7 +50,7 @@ function addInput($type, $name, $value = '', $label = '', $attr = '')
 
 function addSubmitBtn($type, $value = 'Enviar', $attr = '', $next_page = '')
 {
-    return  '<a href="#" class="btn-page next">'.$value.'</a>';
+    return  '<button type="submit" href="#" class="btn-page next">'.$value.'</button>';
 }
 function addBtn($type, $value = 'Enviar', $attr = '', $next_page = '')
 {
@@ -529,6 +529,12 @@ $form_html .= '</form >';
         a:hover.btn-page {
             background-color: #ddd;
             color: black;
+        }
+        button.btn-page {
+            text-decoration: none;
+            display: inline-block;
+            padding: 8px 16px;
+            border-style: none;
         }
         .previous {
             background-color: #f1f1f1;
