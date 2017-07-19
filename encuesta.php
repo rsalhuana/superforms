@@ -4,7 +4,9 @@ use phpformbuilder\Validator\Validator;
 use phpformbuilder\database\Mysql;
 
 session_start();
-include_once rtrim($_SERVER['DOCUMENT_ROOT'], DIRECTORY_SEPARATOR) . '/phpformbuilder/Form.php';
+//include_once rtrim($_SERVER['DOCUMENT_ROOT'], DIRECTORY_SEPARATOR) . '/httpdocs/superforms/phpformbuilder/Form.php';
+include_once 'phpformbuilder/Form.php';
+
 include 'check_session.php';
 include 'dbconnect.php';
 
@@ -184,7 +186,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
         }
     }
-    require_once rtrim($_SERVER['DOCUMENT_ROOT'], DIRECTORY_SEPARATOR) . '/phpformbuilder/database/Mysql.php';
+    //require_once rtrim($_SERVER['DOCUMENT_ROOT'], DIRECTORY_SEPARATOR) . '/phpformbuilder/database/Mysql.php';
+    require_once 'phpformbuilder/database/Mysql.php';
     $db = new Mysql();
 
     $update['idEncuesta'] = Mysql::SQLValue($_POST['idEncuesta']);
@@ -492,8 +495,8 @@ $form_html .= '</form >';
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title><?php echo $page_title; ?></title>
-    <link href="/menu.css" rel="stylesheet">
-    <script src="/menu.js"></script>
+    <link href="menu.css" rel="stylesheet">
+    <script src="menu.js"></script>
     <!-- Bootstrap CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <link href="./assets/css/fileinput-rtl.min.css" rel="stylesheet">
@@ -581,7 +584,7 @@ $form_html .= '</form >';
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="./assets/js/fileinput.min.js"></script>
     <script src="./assets/js/locales/es.js"></script>
-    <script src="/encuesta_script.js"></script>
+    <script src="encuesta_script.js"></script>
 <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
 <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
 </body>

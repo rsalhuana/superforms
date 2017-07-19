@@ -6,13 +6,16 @@ session_start();
 $_SESSION['current_step'] = '';
 include 'check_session.php';
 include 'dbconnect.php';
-include_once rtrim($_SERVER['DOCUMENT_ROOT'], DIRECTORY_SEPARATOR) . '/phpformbuilder/Form.php';
+//include_once rtrim($_SERVER['DOCUMENT_ROOT'], DIRECTORY_SEPARATOR) . '/httpdocs/superforms/phpformbuilder/Form.php';
+include_once 'phpformbuilder/Form.php';
+
 
 $msg_welcome = 'Bienvenido: ' . $_SESSION['userfullname'];
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && Form::testToken('sm-encuesta-nueva-form') === true) 
 {
-    require_once rtrim($_SERVER['DOCUMENT_ROOT'], DIRECTORY_SEPARATOR) . '/phpformbuilder/database/Mysql.php';
+    //require_once rtrim($_SERVER['DOCUMENT_ROOT'], DIRECTORY_SEPARATOR) . '/phpformbuilder/database/Mysql.php';
+    require_once 'phpformbuilder/database/Mysql.php';
 
     $semana_id = $_POST['semana'];
     $local_id = $_POST['local'];
@@ -206,14 +209,14 @@ mysql_close($link);
      <link href="select.css" rel="stylesheet">
      <!-- jQuery -->
     <script src="//code.jquery.com/jquery.js"></script>
-        <link href="/menu.css" rel="stylesheet">
-    <script src="/menu.js"></script>
+        <link href="menu.css" rel="stylesheet">
+    <script src="menu.js"></script>
     <!-- Bootstrap JavaScript -->
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <!-- Bootstrap CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     
-    <script src="/ubigeochange.js"></script>
+    <script src="ubigeochange.js"></script>
     <?php $form->printIncludes('css'); ?>
 
     <script type="text/javascript">

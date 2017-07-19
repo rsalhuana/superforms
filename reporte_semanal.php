@@ -1,6 +1,7 @@
 <?php
 session_start();
-include_once rtrim($_SERVER['DOCUMENT_ROOT'], DIRECTORY_SEPARATOR) . '/phpformbuilder/Form.php';
+//include_once rtrim($_SERVER['DOCUMENT_ROOT'], DIRECTORY_SEPARATOR) . '/httpdocs/superforms/phpformbuilder/Form.php';
+include_once 'phpformbuilder/Form.php';
 //include 'check_session.php';
 include 'dbconnect.php';
 //include 'FormBuilder.php';
@@ -36,11 +37,21 @@ while ($row = mysql_fetch_assoc($form_fields)) {
     $exhib_fields[] = $row;
 }
 
-$s_query = "Select * 
+// $s_query = "Select * 
+// From TabExhibSanitario tes 
+// Join Encuesta e on tes.idEncuesta = e.idEncuesta 
+// Join Local l on l.idLocal = e.idLocal 
+// Join Semana s on s.idSemana = e.idSemana 
+// WHERE e.idTipoLocal = 'TIP03' 
+// And e.idSemana = 'SEM01'";
+
+$s_query = "Select s.SemanaMes, tes.* 
 From TabExhibSanitario tes
 Join Encuesta e on tes.idEncuesta = e.idEncuesta
 Join Local l on l.idLocal = e.idLocal
-WHERE e.idTipoLocal = 'TIP03'";
+Join Semana s on s.idSemana = e.idSemana
+WHERE e.idTipoLocal = 'TIP03' 
+And e.idSemana = 'SEM01'";
 
 $result = mysql_query($s_query);
 //$info_formulario = null;
@@ -90,8 +101,8 @@ $reporte_html .= '</table>';
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     
     <title>REPORTE SEMANAL</title>
-       <link href="/menu.css" rel="stylesheet">
-    <script src="/menu.js"></script>
+       <link href="menu.css" rel="stylesheet">
+    <script src="menu.js"></script>
 <link href="select.css" rel="stylesheet">
 <style type="text/css">
   table{

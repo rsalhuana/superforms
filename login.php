@@ -3,7 +3,8 @@ use phpformbuilder\Form;
 use phpformbuilder\database\Mysql;
 
 session_start();
-include_once rtrim($_SERVER['DOCUMENT_ROOT'], DIRECTORY_SEPARATOR) . '/phpformbuilder/Form.php';
+//include_once rtrim($_SERVER['DOCUMENT_ROOT'], DIRECTORY_SEPARATOR) . '/httpdocs/superforms/phpformbuilder/Form.php';
+include_once 'phpformbuilder/Form.php';
 include 'dbconnect.php'; 
 if($_SESSION['current_step'] != null && $_SESSION['current_step'] != '')
 {
