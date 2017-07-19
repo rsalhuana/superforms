@@ -110,7 +110,7 @@ if($_SERVER["REQUEST_METHOD"] == "GET"){
     $idEncuesta = $_POST['idEncuesta'] ;    
 }
 
-$s_query = "Select * FROM Encuesta e join Local l on e.idLocal = l.idLocal WHERE idEncuesta = " . $idEncuesta ;
+$s_query = "Select *, e.idTipoLocal as 'TipoLocal' FROM Encuesta e join Local l on e.idLocal = l.idLocal WHERE idEncuesta = " . $idEncuesta ;
 $result = mysql_query($s_query);
 $info_encuesta = null;
 while ($row = mysql_fetch_assoc($result)) {
@@ -137,7 +137,18 @@ $table_name = $info_formulario['TableName'];
 
 $previous_page = '';
 if($info_formulario['PreviousFormId'] != null && $info_formulario['PreviousFormId'] != ''){
-    $previous_page = 'encuesta.php?ecid=' . $idEncuesta . '&fid=' . $info_formulario['PreviousFormId'];
+    $prev_form_id= $info_formulario['PreviousFormId'];
+    if($idFormulario == 'F002'){
+        $tipolocal_id = $info_encuesta["TipoLocal"];
+        if($tipolocal_id == 'TIP01'){ //Multicategoria
+            $prev_form_id = 'F006';
+        } else if($tipolocal_id == 'TIP02'){ //Envase Descartable
+            $prev_form_id = 'F008';
+        } else if($tipolocal_id == 'TIP03'){// Sanitario
+            $prev_form_id = 'F001';
+        }
+    }
+    $previous_page = 'encuesta.php?ecid=' . $idEncuesta . '&fid=' . $prev_form_id;
 }
 
 $next_page = '';
