@@ -26,8 +26,8 @@ $nombre_local = $info_encuesta["Local"];
      <link href="select.css" rel="stylesheet">
      <!-- jQuery -->
     <script src="//code.jquery.com/jquery.js"></script>
-        <link href="/menu.css" rel="stylesheet">
-    <script src="/menu.js"></script>
+        <link href="menu.css" rel="stylesheet">
+    <script src="menu.js"></script>
     <!-- Bootstrap JavaScript -->
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <!-- Bootstrap CSS -->

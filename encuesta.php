@@ -156,7 +156,8 @@ if($info_formulario['NextFormId'] != null && $info_formulario['NextFormId'] != '
     $next_page = 'encuesta.php?ecid=' . $idEncuesta . '&fid=' . $info_formulario['NextFormId'];
 }
 
-$page_title = $info_formulario['Descripcion'] . " - Local: " . $info_encuesta["Local"];
+$local_name = "Local: <b>" . $info_encuesta["Local"] . "</b>";
+$page_title = $info_formulario['Descripcion'];
 
 $form_id = 'sm-form-'.$table_name;
 
@@ -392,7 +393,7 @@ foreach($all_fields as $row){
             if($option["idDistribuidora"] == $the_value){
                 $attr = 'selected';
             }
-            $form_html .= addOption($row['FieldName'], $option["idDistribuidora"], $option["Nombre"], '');
+            $form_html .= addOption($row['FieldName'], $option["idDistribuidora"], $option["Nombre"], $attr);
         }
 
         $form_html .= '</select>';
@@ -579,7 +580,7 @@ $form_html .= '</form >';
 
     ?>
     <center> <img src="LOGO_HORIZONTAL.png" width="300px"> </center>
-    <h3 class="text-center"><?php echo $page_title; ?></h3>
+    <h3 class="text-center"><?php echo $local_name; ?> </br> <?php echo $page_title; ?> </h3>
     
     <div class="container">
    
