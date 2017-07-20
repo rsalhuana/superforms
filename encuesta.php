@@ -52,7 +52,7 @@ function addInput($type, $name, $value = '', $label = '', $attr = '')
 
 function addSubmitBtn($type, $value = 'Enviar', $attr = '', $next_page = '')
 {
-    return  '<button type="submit" href="#" class="btn-page next">'.$value.'</button>';
+    return  '<button id="btn-submit-form" type="submit" href="#" class="btn-page next">'.$value.'</button>';
 }
 function addBtn($type, $value = 'Enviar', $attr = '', $next_page = '')
 {
@@ -64,23 +64,23 @@ function addHtml($html)
     return $html;
 }
 
-// function addRadio($name, $value = '', $label = '', $attr = '', $required = 0)
-// {
-//     $required_html = '';
-//     if ($required == 1) {
-//         $required_html = 'required';
-//     }
-//     return '<input type="radio" id="' . $name .'_'.$value . '" name="' . $name . '" value="' . $value . '" ' . $attr . ' ' . $required_html . ' >' . $value . ' ';
-// }
-
 function addRadio($name, $value = '', $label = '', $attr = '', $required = 0)
 {
     $required_html = '';
     if ($required == 1) {
         $required_html = 'required';
     }
-    return '<input type="radio" id="' . $name . '" name="' . $name . '" value="' . $value . '" ' . $attr . ' ' . $required_html . ' >' . $value . ' ';
+    return '<input type="radio" id="' . $name .'_'.$value . '" name="' . $name . '" value="' . $value . '" ' . $attr . ' ' . $required_html . ' >' . $value . ' ';
 }
+
+/*function addRadio($name, $value = '', $label = '', $attr = '', $required = 0)
+{
+    $required_html = '';
+    if ($required == 1) {
+        $required_html = 'required';
+    }
+    return '<input type="radio" id="' . $name . '" name="' . $name . '" value="' . $value . '" ' . $attr . ' ' . $required_html . ' >' . $value . ' ';
+}*/
 
 function addOption($name, $value = '', $label = '', $attr = '')
 {
@@ -351,7 +351,7 @@ foreach($all_fields as $row){
 
     if($row['Type'] == 'radio')
     {
-        $form_html .= '<div class="form-group">';
+        $form_html .= '<div id="div-id-' . $row['FieldName'] . '" class="form-group div-class-' . $row['FieldName'] . '">';
         $form_html .= '<label for="' . $row['FieldName'] . '">' . $row['Description'] . '</label>';
         $form_html .= '<div>';
         
@@ -579,6 +579,7 @@ $form_html .= '</form >';
     }
 
     ?>
+    <p id="div-msg-error" class="alert alert-danger" style="display:none"></p>
     <center> <img src="LOGO_HORIZONTAL.png" width="300px"> </center>
     <h3 class="text-center"><?php echo $local_name; ?> </br> <?php echo $page_title; ?> </h3>
     
@@ -596,7 +597,7 @@ $form_html .= '</form >';
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="./assets/js/fileinput.min.js"></script>
     <script src="./assets/js/locales/es.js"></script>
-    <script src="encuesta_script.js"></script>
+    <script src="encuesta_script.js?v=1"></script>
 <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
 <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
 </body>

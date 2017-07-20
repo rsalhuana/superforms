@@ -230,28 +230,66 @@ $(document).ready(function () {
     $(".input-file-img").fileinput({
         'showUpload': false
     });
-    // $("input[name='Colgante'],input[name='Jalavista'],input[name='TachoDispensador'],input[name='BannerToldo']").click(function() {
-    //     var isChecked = false;
-    //     $("input[name='Colgante'],input[name='Jalavista'],input[name='TachoDispensador'],input[name='BannerToldo']").each(function() {
-    //         if($(this).is(':checked') && $(this).val() == 'Si') {
-    //             isChecked = true;
-    //         }
-    //     });
-    //     if (isChecked == true) {
-    //         alert('checked');
-    //         //$('#MaterialPOP_Si').prop("checked", true);
-    //     } else {
-    //         alert('not checked');
-    //         //$('#MaterialPOP_No').prop("checked", true);
-    //     }
-    // });
+    $("input[name='Colgante'],input[name='Jalavista'],input[name='TachoDispensador'],input[name='BannerToldo']").click(function() {
+        var isChecked = false;
+        var isValid = false;
+        $("input[name='Colgante'],input[name='Jalavista'],input[name='TachoDispensador'],input[name='BannerToldo']").each(function() {
+            if($(this).is(':checked') && $(this).val() == 'Si') {
+                isChecked = true;
+                isValid = true;
+            }
+        });
+        if (isChecked == true) {
+            $('#MaterialPOP_Si').prop("checked", true);
+        } else {
+            //$('#MaterialPOP_No').prop("checked", true);
+        }
+        $('#div-msg-error').hide();
+        $('#btn-submit-form').removeClass('btn disabled');
+        $('#btn-submit-form').prop('disabled', false);
+        if (isValid == false) {
+            $('#btn-submit-form').addClass('btn disabled');
+            $('#btn-submit-form').prop('disabled', true);
+            $('#div-msg-error').html("Error debe seleccionar por lo menos uno.");
+            $('#div-msg-error').show();
+        }
+    });
+    if($("input[name$='MaterialPOP']").val() == "No"){
+        $('#div-id-Colgante').hide();
+        $('#div-id-Jalavista').hide();
+        $('#div-id-TachoDispensador').hide();
+        $('#div-id-BannerToldo').hide();
+    }
     $("input[name$='MaterialPOP']").click(function() {
         var answer = $(this).val();
         
         if(answer == "Si"){
-            $("#divMaterialPOP").show();
+            $('#div-id-Colgante').show();
+            $('#div-id-Jalavista').show();
+            $('#div-id-TachoDispensador').show();
+            $('#div-id-BannerToldo').show();
+            var isChecked = false;
+            var isValid = false;
+            $("input[name='Colgante'],input[name='Jalavista'],input[name='TachoDispensador'],input[name='BannerToldo']").each(function() {
+                if($(this).is(':checked') && $(this).val() == 'Si') {
+                    isChecked = true;
+                    isValid = true;
+                }
+            });
+            $('#div-msg-error').hide();
+            $('#btn-submit-form').removeClass('btn disabled');
+            $('#btn-submit-form').prop('disabled', false);
+            if (isValid == false) {
+                $('#btn-submit-form').addClass('btn disabled');
+                $('#btn-submit-form').prop('disabled', true);
+                $('#div-msg-error').html("Error debe seleccionar por lo menos uno.");
+                $('#div-msg-error').show();
+            }
         }else{
-            $("#divMaterialPOP").hide();
+            $('#div-id-Colgante').hide();
+            $('#div-id-Jalavista').hide();
+            $('#div-id-TachoDispensador').hide();
+            $('#div-id-BannerToldo').hide();
         }
         
     });
