@@ -633,7 +633,7 @@ $form_html .= '</form >';
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="./assets/js/fileinput.min.js"></script>
     <script src="./assets/js/locales/es.js"></script>
-    <script src="encuesta_script.js?v=1"></script>
+    <script src="encuesta_script.js?v=2"></script>
 <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
 <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
 </body>
