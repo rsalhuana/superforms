@@ -9,81 +9,91 @@ $reporte_html = '';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") 
 {
+    $mes_id = $_POST["mes"];
+    $semana_id = $_POST["semana"];
+    $ciudad_id = $_POST["ciudad"];
+    $tipolocal_id = $_POST["tipolocal"];
 
-$table_name = 'TabExhibSanitario';
-$exhib_fields = array();
+    $table_name = 'TabExhibSanitario';
 
-
-$s_query = "Select GroupName, count(*) as Colspan From FormConfiguration Where TableName = '" . $table_name . "'" 
-            ." And Type = 'radio' Group by GroupName";
-
-$categories = mysql_query($s_query);
-
-$reporte_html = '<table ><tr><th></th>';
-
-while ($row = mysql_fetch_assoc($categories)) {
-    $reporte_html .= '<th colspan="' . $row['Colspan'] . '">' . $row['GroupName'] . '</th>';
-}
-
-$reporte_html .= '</tr>';
-
-$s_query = "Select * From FormConfiguration Where TableName = '" . $table_name . "'" 
-        . " And Type = 'radio'"
-        . " Order By FieldOrder Desc";
-
-$form_fields = mysql_query($s_query);
-
-while ($row = mysql_fetch_assoc($form_fields)) {
-    $exhib_fields[] = $row;
-}
-
-// $s_query = "Select * 
-// From TabExhibSanitario tes 
-// Join Encuesta e on tes.idEncuesta = e.idEncuesta 
-// Join Local l on l.idLocal = e.idLocal 
-// Join Semana s on s.idSemana = e.idSemana 
-// WHERE e.idTipoLocal = 'TIP03' 
-// And e.idSemana = 'SEM01'";
-
-$s_query = "Select s.SemanaMes, tes.* 
-From TabExhibSanitario tes
-Join Encuesta e on tes.idEncuesta = e.idEncuesta
-Join Local l on l.idLocal = e.idLocal
-Join Semana s on s.idSemana = e.idSemana
-WHERE e.idTipoLocal = 'TIP03' 
-And e.idSemana = 'SEM01'";
-
-$result = mysql_query($s_query);
-//$info_formulario = null;
-
-$reporte_html .= '<tr><th> </th>';
-
-foreach ($exhib_fields as $field_row) {
-    $reporte_html .= "<th>" . $field_row['Description']. "</th>";
-}
-
-$reporte_html .= '</tr>';
-
-while ($row = mysql_fetch_assoc($result)) {
-    $reporte_html .= "<tr><td>" .   $row['Local'] . "</td>";
-    //echo "<p><b>Semana: </b>" .   $row['idSemana'] . "</p>";
-    foreach ($exhib_fields as $field_row) {
-        $field_value = $row[$field_row['FieldName']];
-        $td_bg_color = '#FFFFFF';
-        if($field_value == 'Exhibido'){
-            $td_bg_color = '#00FF00';
-        }else if($field_value == 'No exhibido'){
-            $td_bg_color = '#FFFF00';
-        }else {
-            $td_bg_color = '#FF0000';
-        }
-
-        $reporte_html .= '<td bgcolor="'. $td_bg_color . '">  </td>';
+    if($tipolocal_id == 'TIP01'){ //Multicategoria
+        $table_name = 'TabExhibMulti';
+    } else if($tipolocal_id == 'TIP02'){ //Envase Descartable
+        $table_name = 'TabExhibDescartable';
+    } else if($tipolocal_id == 'TIP03'){// Sanitario
+        $table_name = 'TabExhibSanitario';
     }
-    $reporte_html .= "</tr>";
-}
 
-$reporte_html .= '</table>';
+    $exhib_fields = array();
+
+    $s_query = "Select GroupName, count(*) as Colspan From FormConfiguration Where TableName = '" . $table_name . "'" 
+                ." And Type = 'radio' Group by GroupName";
+
+    $categories = mysql_query($s_query);
+
+    $reporte_html = '<table ><tr><th></th>';
+
+    while ($row = mysql_fetch_assoc($categories)) {
+        $reporte_html .= '<th colspan="' . $row['Colspan'] . '">' . $row['GroupName'] . '</th>';
+    }
+
+    $reporte_html .= '</tr>';
+
+    $s_query = "Select * From FormConfiguration Where TableName = '" . $table_name . "'" 
+            . " And Type = 'radio'"
+            . " Order By FieldOrder Desc";
+
+    $form_fields = mysql_query($s_query);
+
+    while ($row = mysql_fetch_assoc($form_fields)) {
+        $exhib_fields[] = $row;
+    }
+
+    $s_query = "Select * From TabExhibSanitario tes "
+    . "Join Encuesta e on tes.idEncuesta = e.idEncuesta "
+    . "Join Local l on l.idLocal = e.idLocal "
+    . "Join Semana s on s.idSemana = e.idSemana "
+    . "WHERE e.idTipoLocal = '" . $tipolocal_id . "' And e.idSemana = 'SEM01' And l.idCiudad = '" . $ciudad_id . "'";
+
+    // $s_query = "Select s.SemanaMes, tes.* 
+    // From TabExhibSanitario tes
+    // Join Encuesta e on tes.idEncuesta = e.idEncuesta
+    // Join Local l on l.idLocal = e.idLocal
+    // Join Semana s on s.idSemana = e.idSemana
+    // WHERE e.idTipoLocal = 'TIP03' 
+    // And e.idSemana = 'SEM01'";
+
+    $result = mysql_query($s_query);
+    //$info_formulario = null;
+
+    $reporte_html .= '<tr><th> </th>';
+
+    foreach ($exhib_fields as $field_row) {
+        $reporte_html .= "<th>" . $field_row['Description']. "</th>";
+    }
+
+    $reporte_html .= '</tr>';
+
+    while ($row = mysql_fetch_assoc($result)) {
+        $reporte_html .= "<tr><td>" .   $row['Local'] . "</td>";
+        //echo "<p><b>Semana: </b>" .   $row['idSemana'] . "</p>";
+        foreach ($exhib_fields as $field_row) {
+            $field_value = $row[$field_row['FieldName']];
+            $td_bg_color = '#FFFFFF';
+            if($field_value == 'Exhibido'){
+                $td_bg_color = '#00FF00';
+            }else if($field_value == 'No exhibido'){
+                $td_bg_color = '#FFFF00';
+            }else {
+                $td_bg_color = '#FF0000';
+            }
+
+            $reporte_html .= '<td bgcolor="'. $td_bg_color . '">  </td>';
+        }
+        $reporte_html .= "</tr>";
+    }
+
+    $reporte_html .= '</table>';
 }
 
 ?>
