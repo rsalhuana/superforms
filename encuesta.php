@@ -514,6 +514,9 @@ $form_html .= '</form >';
     <link href="./assets/css/fileinput-rtl.min.css" rel="stylesheet">
     <link href="./assets/css/fileinput.min.css" rel="stylesheet">
     <style> 
+        form{
+            margin-bottom:15px;
+        }
         .error {
             display: list-item;
             max-width: 100%;
