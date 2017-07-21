@@ -179,7 +179,7 @@ if($info_formulario['NextFormId'] != null && $info_formulario['NextFormId'] != '
     $next_page = 'encuesta.php?ecid=' . $idEncuesta . '&fid=' . $info_formulario['NextFormId'];
 }
 
-$local_name = "Local: <b>" . $info_encuesta["Local"] . "</b>";
+$local_name = "<b>Local:</b>" . $info_encuesta["Local"];
 $page_title = $info_formulario['Descripcion'];
 
 $form_id = 'sm-form-'.$table_name;
@@ -617,7 +617,7 @@ $form_html .= '</form >';
     ?>
     <p id="div-msg-error" class="alert alert-danger" style="display:none"></p>
     <center> <img src="LOGO_HORIZONTAL.png" width="300px"> </center>
-    <h3 class="text-center"><?php echo $local_name; ?> </br> <?php echo $page_title; ?> </h3>
+    <h3 class="text-center"><?php echo $local_name; ?> </br></br> <?php echo $page_title; ?> </h3>
     
     <div class="container">
    
