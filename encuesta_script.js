@@ -290,6 +290,9 @@ $(document).ready(function () {
             $('#div-id-Jalavista').hide();
             $('#div-id-TachoDispensador').hide();
             $('#div-id-BannerToldo').hide();
+            $('#div-msg-error').hide();
+            $('#btn-submit-form').removeClass('btn disabled');
+            $('#btn-submit-form').prop('disabled', false);
         }
         
     });
