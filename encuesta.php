@@ -10,29 +10,6 @@ include_once 'phpformbuilder/Form.php';
 include 'check_session.php';
 include 'dbconnect.php';
 
-// *** Include the class
-include("resize-class.php");
-
-
-// function imageCreateFromAny($nombre_fichero) {
-//     $porcentaje = 0.5;
-
-//     // Obtener los nuevos tamaños
-//     list($ancho, $alto) = getimagesize($nombre_fichero);
-//     $nuevo_ancho = $ancho * $porcentaje;
-//     $nuevo_alto = $alto * $porcentaje;
-
-//     // Cargar
-//     $thumb = imagecreatetruecolor($nuevo_ancho, $nuevo_alto);
-//     $origen = imagecreatefromjpeg($nombre_fichero);
-
-//     // Cambiar el tamaño
-//     //imagecopyresized($thumb, $origen, 0, 0, 0, 0, $nuevo_ancho, $nuevo_alto, $ancho, $alto);
-
-//     // Imprimir
-//     return $thumb;
-// }
-
 function startDependantFields($requiredIf, $showIfValue)
 {
     return '<div id="div' . $requiredIf . '" style="display: none;" data-parent="' . $requiredIf . '" data-show-value="' . $showIfValue . '">';
@@ -141,7 +118,6 @@ while ($row = mysql_fetch_assoc($result)) {
 }
 
 $s_query = "Select * From Distribuidora Where idCiudad = '" . $info_encuesta["idCiudad"] . "'";
-//$s_query = "Select * From Formulario Where idForm = '" . $idFormulario . "'";
 $result = mysql_query($s_query);
 $distribuidoras = null;
 while ($row = mysql_fetch_assoc($result)) {
@@ -214,15 +190,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $name_file = str_replace(" ", "_", $name_file);
                 $target_file = $target_dir . $name_file;
 
-                // // *** 1) Initialise / load image
-                // $resizeObj = new resize($f["tmp_name"]);
-
-                // // *** 2) Resize image (options: exact, portrait, landscape, auto, crop)
-                // $resizeObj -> resizeImage(150, 150, 'crop');
-
-                // // *** 3) Save image ('image-name', 'quality [int]')
-                // $resizeObj -> saveImage($target_file, 100);
-
                 if (move_uploaded_file($f["tmp_name"], $target_file)) {
                     $uploads_img[$n] = $name_file;
                 } else {
@@ -231,20 +198,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
         }
     }
-    //require_once rtrim($_SERVER['DOCUMENT_ROOT'], DIRECTORY_SEPARATOR) . '/phpformbuilder/database/Mysql.php';
     require_once 'phpformbuilder/database/Mysql.php';
     $db = new Mysql();
 
     $update['idEncuesta'] = Mysql::SQLValue($_POST['idEncuesta']);
-
-    /*if($idFormulario == 'F004'){
-        foreach($all_fields as $row)
-        {
-            if($row['Type'] == 'file-image'){
-
-            }
-        }    
-    }*/
 
     foreach($all_fields as $row)
     {
