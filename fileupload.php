@@ -6,13 +6,13 @@ include_once 'phpformbuilder/Form.php';
 $form = new Form('frm89', 'horizontal', 'novalidate');
 
 $fileUpload_config = array(
-    //'xml'                 => 'images-with-captions',
+    'xml'                 => 'images-with-captions',
     'uploader'            => 'imageFileUpload.php',
-    'btn-text'            => 'Elegir foto...',
-    'max-number-of-files' => '5'
+    'btn-text'            => 'Elegir una foto',
+    'max-number-of-files' => '1'
 );
-$form->addHtml('<span class="help-block"> 5 fotos max. (.jpg, .png, .gif)</span>', 'uploaded-images', 'after');
-$form->addFileUpload('file',  'uploaded-images[]', '', 'la descripción', '', $fileUpload_config);
+$form->addHtml('<span class="help-block"> 5 fotos max. (.jpg, .png, .gif)</span>', 'UploadedImages', 'after');
+$form->addFileUpload('file',  'UploadedImages[]', '', 'la descripción', '', $fileUpload_config);
     
 ?>
 <!DOCTYPE html>
@@ -51,17 +51,22 @@ $form->addFileUpload('file',  'uploaded-images[]', '', 'la descripción', '', $f
         
         $form->printJsCode();
 ?>
- <script type="text/javascript">
-$('#frm89').fileupload({
-    // Enable image resizing, except for Android and Opera,
-    // which actually support image resizing, but fail to
-    // send Blob objects via XHR requests:
-    disableImageResize: /Android(?!.*Chrome)|Opera/
-        .test(window.navigator && navigator.userAgent),
-    imageMaxWidth: 800,
-    imageMaxHeight: 800,
-    imageCrop: true // Force cropped images
-})
- </script>
+
+<script>
+
+    $(function () {
+        //'use strict';
+        // Initialize the jQuery File Upload widget:
+        $('#frm89').fileupload({
+            disableImageResize: /Android(?!.*Chrome)|Opera/
+                .test(window.navigator && navigator.userAgent),
+            imageMaxWidth: 800,
+            imageMaxHeight: 800,
+            imageCrop: true // Force cropped images
+        });
+    });
+</script>
+
+
 </body>
 </html>
