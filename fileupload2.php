@@ -33,9 +33,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     <script src="phpformbuilder/plugins/jQuery-File-Upload/js/jquery.fileupload-process.min.js"></script>
     <script src="phpformbuilder/plugins/jQuery-File-Upload/js/jquery.fileupload-validate.min.js"></script>
     <script src="phpformbuilder/plugins/jQuery-File-Upload/js/jquery.fileupload-image.min.js"></script>
-
+   
 </head>
 <body>
+
     <form id="frm89" action="fileupload2.php" method="POST" enctype="multipart/form-data" 
     novalidate class="form-horizontal">
         <div>

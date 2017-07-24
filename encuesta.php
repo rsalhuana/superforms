@@ -215,23 +215,23 @@ while ($row = mysql_fetch_assoc($form_fields)) {
     validation if posted
 ============================================= */
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $target_dir = "uploads/";
-    $uploads_img = array();
-    if (is_array($_FILES) && count($_FILES) > 0) {
-        foreach ($_FILES as $n => $f) {
-            if ($f["name"] != "") {
-                $name_file = time() . "-" . basename($f["name"]);
-                $name_file = str_replace(" ", "_", $name_file);
-                $target_file = $target_dir . $name_file;
+    // $target_dir = "uploads/";
+    // $uploads_img = array();
+    // if (is_array($_FILES) && count($_FILES) > 0) {
+    //     foreach ($_FILES as $n => $f) {
+    //         if ($f["name"] != "") {
+    //             $name_file = time() . "-" . basename($f["name"]);
+    //             $name_file = str_replace(" ", "_", $name_file);
+    //             $target_file = $target_dir . $name_file;
 
-                if (move_uploaded_file($f["tmp_name"], $target_file)) {
-                    $uploads_img[$n] = $name_file;
-                } else {
-                    echo "Hubo un problema al cargar la foto.";
-                }
-            }
-        }
-    }
+    //             if (move_uploaded_file($f["tmp_name"], $target_file)) {
+    //                 $uploads_img[$n] = $name_file;
+    //             } else {
+    //                 echo "Hubo un problema al cargar la foto.";
+    //             }
+    //         }
+    //     }
+    // }
     require_once 'phpformbuilder/database/Mysql.php';
     $db = new Mysql();
 
@@ -239,11 +239,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     foreach($all_fields as $row)
     {
-        if($row['Type'] == 'file-image')
+        // if($row['Type'] == 'file-image')
+        // {
+        //     $uploaded_images = json_encode($_POST[$row['FieldName']]);
+        //     if (array_key_exists($row['FieldName'], $uploads_img)) {
+        //         $update[$row['FieldName']] = Mysql::SQLValue($uploads_img[$row['FieldName']]);
+        //     }
+        // }
+        if($row['FieldName'] == 'UploadedImages')
         {
-            $uploaded_images = json_encode($_POST[$row['FieldName']]);
-            if (array_key_exists($row['FieldName'], $uploads_img)) {
-                $update[$row['FieldName']] = Mysql::SQLValue($uploads_img[$row['FieldName']]);
+            //$uploaded_images = json_encode($_POST[$row['FieldName']]);
+            $uploaded_images = $_POST[$row['FieldName']];
+            $i = 0;
+            foreach($uploaded_images as $img){
+                if($i > 3){ $i = 0;}
+                $i++;
+                $update['FotoExhib' . $i] = Mysql::SQLValue($img);
+                
+                //$caption = str_replace(".","_",$img) . '-caption';
+                //echo "<p>comentario: " . $_POST[$caption] . "</p>";
             }
         }
         else
@@ -470,36 +484,46 @@ foreach($all_fields as $row){
         
         $form_html .= addInput('number', $row['FieldName'], $the_value, $row['Description'], $attributes);
     }
-    else if($row['Type'] == 'pictures')
+    else if($row['Type'] == 'UploadedImages')
     {
-        $images_list = $the_value;
+        if($idFormulario == 'F003'){
+            $form_html .= addHtml('<img class="text-center" width="510" src="http://mercadia.com.pe/phpformbuilder/images/uploads/thumbnail/' . $info_encuesta['FotoExhib1'] . '"></br>' );
+            $form_html .= addInput('hidden', $row['FieldName'].'[]', $info_encuesta['FotoExhib1'], '', '');
+            $form_html .= addHtml('<img class="text-center" width="510" src="http://mercadia.com.pe/phpformbuilder/images/uploads/thumbnail/' . $info_encuesta['FotoExhib2'] . '"></br>' );
+            $form_html .= addInput('hidden', $row['FieldName'].'[]', $info_encuesta['FotoExhib2'], '', '');
+            $form_html .= addHtml('<img class="text-center" width="510" src="http://mercadia.com.pe/phpformbuilder/images/uploads/thumbnail/' . $info_encuesta['FotoExhib3'] . '"></br>' );
+            $form_html .= addInput('hidden', $row['FieldName'].'[]', $info_encuesta['FotoExhib3'], '', '');
+        }
+        //$images_list = $the_value;
 
 /*        if($_POST['UploadedImages']){
             $images_list = json_encode($_POST[$row['FieldName']]);
         }
 */
-        if($images_list != null && $images_list != ''){
-            $images_list = $the_value;
-            $images = explode(',',$images_list);
+        // if($images_list != null && $images_list != ''){
+        //     $images_list = $the_value;
+        //     $images = explode(',',$images_list);
 
-            foreach($images as $img){
-                $text_only = str_replace('"', '', $img);
-                $text_only = str_replace('[', '', $text_only);
-                $text_only = str_replace(']', '', $text_only);
+        //     foreach($images as $img){
+        //         $text_only = str_replace('"', '', $img);
+        //         $text_only = str_replace('[', '', $text_only);
+        //         $text_only = str_replace(']', '', $text_only);
 
-                $form_html .= addHtml('<img class="text-center" width="510" src="phpformbuilder/images/uploads/' . $text_only . '"></br>' );
+        //         $form_html .= addHtml('<img class="text-center" width="510" src="/phpformbuilder/images/uploads/' . $text_only . '"></br>' );
                 
-                $form_html .= addInput('hidden', $row['FieldName'].'[]', $text_only, '', '');
-            }
-        }
+        //         $form_html .= addInput('hidden', $row['FieldName'].'[]', $text_only, '', '');
+        //     }
+        // }
 
-        $fileUpload_config = array(
-            'xml'                 => 'images-with-captions',
-            'uploader'            => 'imageFileUpload.php',
-            'btn-text'            => 'Explorar ...',
-            'max-number-of-files' => $row['MaxValue']
-        );
-        $form_html .= addHtml('<span class="help-block">' . $row['MaxValue'] . 'fotos max. (.jp[e]g, .png, .gif)</span>', 'uploaded-images', 'after');
+        // $fileUpload_config = array(
+        //     'xml'                 => 'images-with-captions',
+        //     'uploader'            => 'imageFileUpload.php',
+        //     'btn-text'            => 'Explorar ...',
+        //     'max-number-of-files' => $row['MaxValue']
+        // );
+        $attr = $row['IsRequired'] == 1 ? 'required' : '';
+        $form_html .= addFileImage('UploadedImages', $the_value, $row['Description'], $attr);
+        $form_html .= addHtml('<span class="help-block">' . $row['MaxValue'] . ' fotos m&iacute;nimo</span>', 'uploaded-images', 'after');
         //$form->addFileUpload('file',  $row['FieldName'].'[]', '', $row['Description'], '', $fileUpload_config);
     }
     else
@@ -535,24 +559,13 @@ $form_html .= '</form >';
     <link href="menu.css" rel="stylesheet">
     <script src="menu.js"></script>
     <!-- Bootstrap CSS -->
+<script src="//code.jquery.com/jquery.js"></script>
+    
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    
 
-<!-- Inicio file upload -->
-    <link href="phpformbuilder/plugins/jQuery-File-Upload/css/jquery.fileupload.min.css" rel="stylesheet" media="screen">
-    <script src="phpformbuilder/plugins/jQuery-File-Upload/js/tmpl.min.js"></script>
-    <script src="phpformbuilder/plugins/jQuery-File-Upload/js/vendor/jquery.ui.widget.min.js"></script>
-    <script src="phpformbuilder/plugins/jQuery-File-Upload/js/load-image.min.js"></script>
-    <script src="phpformbuilder/plugins/jQuery-File-Upload/js/canvas-to-blob.min.js"></script>
-    <script src="phpformbuilder/plugins/jQuery-File-Upload/js/jquery.iframe-transport.min.js"></script>
-    <script src="phpformbuilder/plugins/jQuery-File-Upload/js/jquery.fileupload.min.js"></script>
-    <script src="phpformbuilder/plugins/jQuery-File-Upload/js/jquery.fileupload-ui.min.js"></script>
-    <script src="phpformbuilder/plugins/jQuery-File-Upload/js/jquery.fileupload-process.min.js"></script>
-    <script src="phpformbuilder/plugins/jQuery-File-Upload/js/jquery.fileupload-validate.min.js"></script>
-    <script src="phpformbuilder/plugins/jQuery-File-Upload/js/jquery.fileupload-image.min.js"></script>
-<!-- Fin file upload-->
-
-    <link href="./assets/css/fileinput-rtl.min.css" rel="stylesheet">
-    <link href="./assets/css/fileinput.min.css" rel="stylesheet">
+  
     <style> 
         form{
             margin-bottom:15px;
@@ -634,27 +647,25 @@ $form_html .= '</form >';
             </div>
         </div>
     </div>
-    <!-- jQuery -->
-    <script src="//code.jquery.com/jquery.js"></script>
-    <!-- Bootstrap JavaScript -->
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="./assets/js/fileinput.min.js"></script>
-    <script src="./assets/js/locales/es.js"></script>
-    <script src="encuesta_script.js?v=2"></script>
+   
+    <script src="encuesta_script.js?v=34"></script>
 <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
 <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
 
 
-<script type="text/javascript">
-        $(document).ready(function () {
 
-            if ($(".has-error")[0]) {
-                $("html, body").animate({
-                    scrollTop: $($(".has-error")[0]).offset().top - 400
-                }, 800);
-            }
-        });
-    </script>
+<!-- Inicio file upload -->
+    <link href="phpformbuilder/plugins/jQuery-File-Upload/css/jquery.fileupload.min.css" rel="stylesheet" media="screen">
+    <script src="phpformbuilder/plugins/jQuery-File-Upload/js/tmpl.min.js"></script>
+    <script src="phpformbuilder/plugins/jQuery-File-Upload/js/vendor/jquery.ui.widget.min.js"></script>
+    <script src="phpformbuilder/plugins/jQuery-File-Upload/js/load-image.min.js"></script>
+    <script src="phpformbuilder/plugins/jQuery-File-Upload/js/canvas-to-blob.min.js"></script>
+    <script src="phpformbuilder/plugins/jQuery-File-Upload/js/jquery.iframe-transport.min.js"></script>
+    <script src="phpformbuilder/plugins/jQuery-File-Upload/js/jquery.fileupload.min.js"></script>
+    <script src="phpformbuilder/plugins/jQuery-File-Upload/js/jquery.fileupload-ui.min.js"></script>
+    <script src="phpformbuilder/plugins/jQuery-File-Upload/js/jquery.fileupload-process.min.js"></script>
+    <script src="phpformbuilder/plugins/jQuery-File-Upload/js/jquery.fileupload-validate.min.js"></script>
+    <script src="phpformbuilder/plugins/jQuery-File-Upload/js/jquery.fileupload-image.min.js"></script>
 
     <script id="template-upload-UploadedImages" type="text/x-tmpl">
     {% for (var i=0, file; file=o.files[i]; i++) { %}
@@ -719,33 +730,35 @@ $form_html .= '</form >';
                     {% } %}
                 </td>
             </tr>
-            // captions
-            <tr class="template-download fade">
-                <td colspan="4">
-                    <div class="form-group">
-                        <label for="{%=file.name%}-caption" class="col-sm-4 control-label">
-                            Comentarios
-                        </label>
-                        <div class="col-sm-8">
-                            <input name="{%=file.name%}-caption" type="text" value="" class="form-control" />
+            <?php if($idFormulario == 'F004'){ ?>
+                // captions
+                <tr class="template-download fade">
+                    <td colspan="4">
+                        <div class="form-group">
+                            <label for="{%=file.name%}-caption" class="col-sm-4 control-label">
+                                Comentarios
+                            </label>
+                            <div class="col-sm-8">
+                                <input name="{%=file.name%}-caption" type="text" value="" class="form-control" />
+                            </div>
                         </div>
-                    </div>
-                </td>
-            </tr>
-            // monto
-            <tr>
-            <tr class="template-download fade">
-                <td colspan="4">
-                    <div class="form-group">
-                        <label for="{%=file.name%}-monto" class="col-sm-4 control-label">
-                            Monto
-                        </label>
-                        <div class="col-sm-8">
-                            <input name="{%=file.name%}-monto" type="text" value="" class="form-control" />
+                    </td>
+                </tr>
+                // monto
+                <tr>
+                <tr class="template-download fade">
+                    <td colspan="4">
+                        <div class="form-group">
+                            <label for="{%=file.name%}-monto" class="col-sm-4 control-label">
+                                Monto
+                            </label>
+                            <div class="col-sm-8">
+                                <input name="{%=file.name%}-monto" type="text" value="" class="form-control" />
+                            </div>
                         </div>
-                    </div>
-                </td>
-            </tr>
+                    </td>
+                </tr>
+            <?php }?>
         {% } %}
     </script>
     <script>
@@ -755,7 +768,7 @@ $form_html .= '</form >';
         $(function () {
             'use strict';
             // Initialize the jQuery File Upload widget:
-            $('#frm89').fileupload({
+            $('#frmenc').fileupload({
                 downloadTemplateId: 'template-download-UploadedImages',
                 uploadTemplateId: 'template-upload-UploadedImages',
                 paramName: 'files[]',
@@ -772,7 +785,7 @@ $form_html .= '</form >';
             });
         });
     </script>
-
+<!-- Fin file upload-->
 
 </body>
 </html>

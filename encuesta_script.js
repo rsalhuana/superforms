@@ -227,9 +227,9 @@ $(document).ready(function () {
         }
     });
 
-    $(".input-file-img").fileinput({
-        'showUpload': false
-    });
+    // $(".input-file-img").fileinput({
+    //     'showUpload': false
+    // });
     $("input[name='Colgante'],input[name='Jalavista'],input[name='TachoDispensador'],input[name='BannerToldo']").click(function() {
         var isChecked = false;
         var isValid = false;
