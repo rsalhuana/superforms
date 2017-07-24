@@ -524,7 +524,7 @@ foreach($all_fields as $row){
         // );
         $attr = $row['IsRequired'] == 1 ? 'required' : '';
         $form_html .= addFileUpload('UploadedImages', $the_value, $row['Description'], $attr);
-        $form_html .= addHtml('<span class="help-block">' . $row['MaxValue'] . ' fotos m&iacute;nimo</span>', 'uploaded-images', 'after');
+        $form_html .= addHtml('<span class="help-block">' . $row['MaxValue'] . ' fotos m&aacute;ximo</span>', 'uploaded-images', 'after');
         //$form->addFileUpload('file',  $row['FieldName'].'[]', '', $row['Description'], '', $fileUpload_config);
     }
     else
@@ -741,8 +741,15 @@ $form_html .= '</form >';
                             </label>
                             <div class="col-sm-8">
 
-                                <input name="{%=file.name%}-Distribuidor" type="text" value="" class="form-control" />
-                                
+                                <select class="form-control" name="{%=file.name%}-Distribuidor">
+                                <?php 
+                                    $form_html = addOption("{%=file.name%}-Distribuidor", "", "Selecciona una Distribuidora", '');
+                                    foreach ($distribuidoras as $option) {
+                                        $form_html .= addOption("{%=file.name%}-Distribuidor", $option["idDistribuidora"], $option["Nombre"], $attr);
+                                    }
+                                    echo $form_html;
+                                ?>
+                                </select>
                             </div>
                         </div>
                     </td>
@@ -753,10 +760,10 @@ $form_html .= '</form >';
                     <td colspan="4">
                         <div class="form-group">
                             <label for="{%=file.name%}-monto" class="col-sm-4 control-label">
-                                Monto
+                                Monto Boleta S/.
                             </label>
                             <div class="col-sm-8">
-                                <input name="{%=file.name%}-monto" type="text" value="" class="form-control" />
+                                <input type="text" class="form-control onlyDecimal" name="{%=file.name%}-monto" value="">
                             </div>
                         </div>
                     </td>
