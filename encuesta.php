@@ -31,21 +31,21 @@ function addTextarea($name, $value = '', $label = '', $attr = '', $required = 0)
     return $label . '<div>' . $textarea . '</div>';
 }
 
-// function addFileImage($name, $value = '', $label = '', $attr = '')
-// {
-//     $label = '<label for="' . $name . '">' . $label . '</label>';
-
-//     $element = '';
-//     if($value != null && $value != ''){
-//         $element = '<img src="uploads/' . $value . '" alt="" height="82">';
-//         $attr = '';
-//     }
-
-//     $element .= '<input id="' . $name . '" name="' . $name . '" type="file"  class="input-file-img" ' . $attr . ' />';
-//     return $label . '<div>' . $element . '</div>';
-// }
-
 function addFileImage($name, $value = '', $label = '', $attr = '')
+{
+    $label = '<label for="' . $name . '">' . $label . '</label>';
+
+    $element = '';
+    if($value != null && $value != ''){
+        $element = '<img src="uploads/' . $value . '" alt="" height="82">';
+        $attr = '';
+    }
+
+    $element .= '<input id="' . $name . '" name="' . $name . '" type="file"  class="input-file-img" ' . $attr . ' />';
+    return $label . '<div>' . $element . '</div>';
+}
+
+function addFileUpload($name, $value = '', $label = '', $attr = '')
 {
     $label = '<label for="' . $name . '"  class="col-sm-4 control-label fileinput-label">' . $label . '</label>';
 
@@ -252,7 +252,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $uploaded_images = $_POST[$row['FieldName']];
             $i = 0;
             foreach($uploaded_images as $img){
-                if($i > 3){ $i = 0;}
+                if($i == 3){ $i = 0;}
                 $i++;
                 $update['FotoExhib' . $i] = Mysql::SQLValue($img);
                 
@@ -444,8 +444,8 @@ foreach($all_fields as $row){
     else if($row['Type'] == 'file-image')
     {
         $attr = $row['IsRequired'] == 1 ? 'required' : '';
-        $form_html .= addFileImage('UploadedImages', $the_value, $row['Description'], $attr);
-        // $form_html .= addFileImage($row['FieldName'], $the_value, $row['Description'], $attr);
+        //$form_html .= addFileImage('UploadedImages', $the_value, $row['Description'], $attr);
+         $form_html .= addFileImage($row['FieldName'], $the_value, $row['Description'], $attr);
     }
     else if($row['Type'] == 'input-text')
     {
@@ -486,13 +486,14 @@ foreach($all_fields as $row){
     }
     else if($row['Type'] == 'UploadedImages')
     {
-        if($idFormulario == 'F003'){
-            $form_html .= addHtml('<img class="text-center" width="510" src="http://mercadia.com.pe/phpformbuilder/images/uploads/thumbnail/' . $info_encuesta['FotoExhib1'] . '"></br>' );
-            $form_html .= addInput('hidden', $row['FieldName'].'[]', $info_encuesta['FotoExhib1'], '', '');
-            $form_html .= addHtml('<img class="text-center" width="510" src="http://mercadia.com.pe/phpformbuilder/images/uploads/thumbnail/' . $info_encuesta['FotoExhib2'] . '"></br>' );
-            $form_html .= addInput('hidden', $row['FieldName'].'[]', $info_encuesta['FotoExhib2'], '', '');
-            $form_html .= addHtml('<img class="text-center" width="510" src="http://mercadia.com.pe/phpformbuilder/images/uploads/thumbnail/' . $info_encuesta['FotoExhib3'] . '"></br>' );
-            $form_html .= addInput('hidden', $row['FieldName'].'[]', $info_encuesta['FotoExhib3'], '', '');
+        if($existing_info != null && $idFormulario == 'F003'){
+            
+            $form_html .= addHtml('<img class="text-center" width="310" src="http://mercadia.com.pe/phpformbuilder/images/uploads/' . $existing_info['FotoExhib1'] . '"></br>' );
+            $form_html .= addInput('hidden', $row['FieldName'].'[]', $existing_info['FotoExhib1'], '', '');
+            $form_html .= addHtml('<img class="text-center" width="310" src="http://mercadia.com.pe/phpformbuilder/images/uploads/' . $existing_info['FotoExhib2'] . '"></br>' );
+            $form_html .= addInput('hidden', $row['FieldName'].'[]', $existing_info['FotoExhib2'], '', '');
+            $form_html .= addHtml('<img class="text-center" width="310" src="http://mercadia.com.pe/phpformbuilder/images/uploads/' . $existing_info['FotoExhib3'] . '"></br>' );
+            $form_html .= addInput('hidden', $row['FieldName'].'[]', $existing_info['FotoExhib3'], '', '');
         }
         //$images_list = $the_value;
 
@@ -522,7 +523,7 @@ foreach($all_fields as $row){
         //     'max-number-of-files' => $row['MaxValue']
         // );
         $attr = $row['IsRequired'] == 1 ? 'required' : '';
-        $form_html .= addFileImage('UploadedImages', $the_value, $row['Description'], $attr);
+        $form_html .= addFileUpload('UploadedImages', $the_value, $row['Description'], $attr);
         $form_html .= addHtml('<span class="help-block">' . $row['MaxValue'] . ' fotos m&iacute;nimo</span>', 'uploaded-images', 'after');
         //$form->addFileUpload('file',  $row['FieldName'].'[]', '', $row['Description'], '', $fileUpload_config);
     }
@@ -731,15 +732,17 @@ $form_html .= '</form >';
                 </td>
             </tr>
             <?php if($idFormulario == 'F004'){ ?>
-                // captions
+                // Distribuidor
                 <tr class="template-download fade">
                     <td colspan="4">
                         <div class="form-group">
-                            <label for="{%=file.name%}-caption" class="col-sm-4 control-label">
-                                Comentarios
+                            <label for="{%=file.name%}-Distribuidor" class="col-sm-4 control-label">
+                                Distribuidor
                             </label>
                             <div class="col-sm-8">
-                                <input name="{%=file.name%}-caption" type="text" value="" class="form-control" />
+
+                                <input name="{%=file.name%}-Distribuidor" type="text" value="" class="form-control" />
+                                
                             </div>
                         </div>
                     </td>
