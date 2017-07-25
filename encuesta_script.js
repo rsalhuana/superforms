@@ -316,6 +316,32 @@ $(document).ready(function () {
         });
     }
 
+    $("#frmenc").submit(function(e) {
+        var self = this;
+        e.preventDefault();
+        // jQuery.fancybox('<div class="box">Some amazing wonderful content</div>', {
+        //     'onClosed' : function() { 
+        //                     self.submit();
+        //                     }
+        // });
+        var uploadedImagesMinValue = $('input[name="UploadedImagesMinValue"]').val();
+        var uploadedImagesMaxValue = $('input[name="UploadedImagesMaxValue"]').val();
+        var numberOFUploadedImages = $('input[name="UploadedImages[]"]').length - 1;
+        
+        if(numberOFUploadedImages < uploadedImagesMinValue){
+            $('#div-msg-error').html("Debe agregar al menos " + uploadedImagesMinValue + " fotos");
+            $('#div-msg-error').show();
+        }else if(numberOFUploadedImages > uploadedImagesMaxValue){
+            $('#div-msg-error').html("Solo puede agregar " + uploadedImagesMaxValue + " fotos");
+            $('#div-msg-error').show();
+        }else{
+            $('#div-msg-error').html("");
+            $('#div-msg-error').hide();
+        }
+
+        return false; //is superfluous, but I put it here as a fallback
+    });
+
     $('.onlyDecimal').keydown(function (event) {
         if (event.shiftKey == true) {
             event.preventDefault();

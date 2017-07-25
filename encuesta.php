@@ -20,6 +20,25 @@ function endDependantFields()
     return '</div>';
 }
 
+function addThumbnailPicture($pic_name){
+    return '<tr class="template-download fade in">
+                <td>
+                    <span class="preview">
+                            <img src="/phpformbuilder/images/uploads/thumbnail/' . $pic_name . '">
+		            </span>
+                    <input type="hidden" name="UploadedImages[]" value="' . $pic_name . '">
+                </td>
+                <td>
+                </td>
+                <td>
+                        <button class="btn btn-danger delete" data-type="DELETE" data-url="/superforms/phpformbuilder/plugins/jQuery-File-Upload/server/php/imageFileUpload.php?file=' . $pic_name . '" onclick="deleteCaption(this);">
+                            <i class="glyphicon glyphicon-trash"></i>
+                            <span>Eliminar</span>
+                        </button>
+                </td>
+            </tr>';
+}
+
 function addTextarea($name, $value = '', $label = '', $attr = '', $required = 0)
 {
     $required_html = '';
@@ -61,7 +80,7 @@ function addFileUpload($name, $value = '', $label = '', $attr = '')
                         <div class="col-lg-7">
                             <span class="btn btn-success fileinput-button">
                                 <i class="glyphicon glyphicon-plus"></i>
-                                <span>Elegir una foto</span>
+                                <span>Elegir foto</span>
                                 <input type="file" name="UploadedImages[]" multiple />
                             </span>
                             <span class="fileupload-process"></span>
@@ -73,9 +92,10 @@ function addFileUpload($name, $value = '', $label = '', $attr = '')
                             <div class="progress-extended">&nbsp;</div>
                         </div>
                     </div>
-                    <table role="presentation" class="table table-striped"><tbody class="files"></tbody></table>
+                    
                 </div>
             </div>';
+            // <table role="presentation" class="table table-striped"><tbody class="files"></tbody></table>
         return $label .  $element ;
 }
 
@@ -486,46 +506,28 @@ foreach($all_fields as $row){
     }
     else if($row['Type'] == 'UploadedImages')
     {
-        if($existing_info != null && $idFormulario == 'F003'){
-            
-            $form_html .= addHtml('<img class="text-center" width="310" src="http://mercadia.com.pe/phpformbuilder/images/uploads/' . $existing_info['FotoExhib1'] . '"></br>' );
-            $form_html .= addInput('hidden', $row['FieldName'].'[]', $existing_info['FotoExhib1'], '', '');
-            $form_html .= addHtml('<img class="text-center" width="310" src="http://mercadia.com.pe/phpformbuilder/images/uploads/' . $existing_info['FotoExhib2'] . '"></br>' );
-            $form_html .= addInput('hidden', $row['FieldName'].'[]', $existing_info['FotoExhib2'], '', '');
-            $form_html .= addHtml('<img class="text-center" width="310" src="http://mercadia.com.pe/phpformbuilder/images/uploads/' . $existing_info['FotoExhib3'] . '"></br>' );
-            $form_html .= addInput('hidden', $row['FieldName'].'[]', $existing_info['FotoExhib3'], '', '');
-        }
-        //$images_list = $the_value;
+        $form_html .= addInput('hidden', 'UploadedImagesMinValue', $row['MinValue'], '', '');
+        $form_html .= addInput('hidden', 'UploadedImagesMaxValue', $row['MaxValue'], '', '');
 
-/*        if($_POST['UploadedImages']){
-            $images_list = json_encode($_POST[$row['FieldName']]);
-        }
-*/
-        // if($images_list != null && $images_list != ''){
-        //     $images_list = $the_value;
-        //     $images = explode(',',$images_list);
-
-        //     foreach($images as $img){
-        //         $text_only = str_replace('"', '', $img);
-        //         $text_only = str_replace('[', '', $text_only);
-        //         $text_only = str_replace(']', '', $text_only);
-
-        //         $form_html .= addHtml('<img class="text-center" width="510" src="/phpformbuilder/images/uploads/' . $text_only . '"></br>' );
-                
-        //         $form_html .= addInput('hidden', $row['FieldName'].'[]', $text_only, '', '');
-        //     }
-        // }
-
-        // $fileUpload_config = array(
-        //     'xml'                 => 'images-with-captions',
-        //     'uploader'            => 'imageFileUpload.php',
-        //     'btn-text'            => 'Explorar ...',
-        //     'max-number-of-files' => $row['MaxValue']
-        // );
+        $form_html .= addHtml('<table role="presentation" class="table table-striped"><tbody class="files">');
+        
         $attr = $row['IsRequired'] == 1 ? 'required' : '';
         $form_html .= addFileUpload('UploadedImages', $the_value, $row['Description'], $attr);
-        $form_html .= addHtml('<span class="help-block">' . $row['MaxValue'] . ' fotos m&aacute;ximo</span>', 'uploaded-images', 'after');
-        //$form->addFileUpload('file',  $row['FieldName'].'[]', '', $row['Description'], '', $fileUpload_config);
+        
+        if($existing_info != null && $idFormulario == 'F003'){
+            $form_html .= addHtml('<span class="help-block">Elija ' . $row['MaxValue'] . ' fotos.</span>');
+            
+            if($existing_info['FotoExhib1'] != null && $existing_info['FotoExhib1'] != ''){
+                $form_html .= addThumbnailPicture($existing_info['FotoExhib1']);
+            }
+            if($existing_info['FotoExhib2'] != null && $existing_info['FotoExhib2'] != ''){
+                $form_html .= addThumbnailPicture($existing_info['FotoExhib2']);
+            }
+            if($existing_info['FotoExhib3'] != null && $existing_info['FotoExhib3'] != ''){
+                $form_html .= addThumbnailPicture($existing_info['FotoExhib3']);
+            }
+        }
+        $form_html .= addHtml('</tbody></table>');
     }
     else
     {
@@ -649,7 +651,7 @@ $form_html .= '</form >';
         </div>
     </div>
    
-    <script src="encuesta_script.js?v=34"></script>
+    <script src="encuesta_script.js?v=1209"></script>
 <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
 <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
 
@@ -763,7 +765,7 @@ $form_html .= '</form >';
                                 Monto Boleta S/.
                             </label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control onlyDecimal" name="{%=file.name%}-monto" value="">
+                                <input type="number" class="form-control onlyDecimal" name="{%=file.name%}-monto" value="">
                             </div>
                         </div>
                     </td>
@@ -773,7 +775,8 @@ $form_html .= '</form >';
     </script>
     <script>
         var deleteCaption = function(btn) {
-            $(btn).closest('tr.template-download').next('tr.template-download').remove();
+            //$(btn).closest('tr.template-download').next('tr.template-download').remove();
+            $(btn).closest('tr.template-download').remove();
         };
         $(function () {
             'use strict';
