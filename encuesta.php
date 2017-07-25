@@ -739,7 +739,7 @@ $form_html .= '</form >';
             <?php if($idFormulario == 'F004'){ ?>
                 // Distribuidor
                 <tr class="template-download fade">
-                    <td colspan="4">
+                    <td colspan="2">
                         <div class="form-group">
                             <label for="{%=file.name%}-Distribuidor" class="col-sm-4 control-label">
                                 Distribuidor
@@ -758,11 +758,8 @@ $form_html .= '</form >';
                             </div>
                         </div>
                     </td>
-                </tr>
-                // monto
-                <tr>
-                <tr class="template-download fade">
-                    <td colspan="4">
+                    <td></td>
+                    <td >
                         <div class="form-group">
                             <label for="{%=file.name%}-monto" class="col-sm-4 control-label">
                                 Monto Boleta S/.
@@ -773,13 +770,17 @@ $form_html .= '</form >';
                         </div>
                     </td>
                 </tr>
+                
             <?php }?>
         {% } %}
     </script>
     <script>
         var deleteCaption = function(btn) {
-            //$(btn).closest('tr.template-download').next('tr.template-download').remove();
-            $(btn).closest('tr.template-download').remove();
+             <?php if($idFormulario == 'F004'){ ?>
+                $(btn).closest('tr.template-download').next('tr.template-download').remove();
+            <?php } else { ?>
+                $(btn).closest('tr.template-download').remove();
+            <?php } ?>
         };
         $(function () {
             'use strict';
