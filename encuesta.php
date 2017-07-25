@@ -514,8 +514,11 @@ foreach($all_fields as $row){
         $attr = $row['IsRequired'] == 1 ? 'required' : '';
         $form_html .= addFileUpload('UploadedImages', $the_value, $row['Description'], $attr);
         
+        if($idFormulario == 'F003'){
+             $form_html .= addHtml('<span class="help-block">Elija ' . $row['MaxValue'] . ' fotos.</span>');
+        }
+        
         if($existing_info != null && $idFormulario == 'F003'){
-            $form_html .= addHtml('<span class="help-block">Elija ' . $row['MaxValue'] . ' fotos.</span>');
             
             if($existing_info['FotoExhib1'] != null && $existing_info['FotoExhib1'] != ''){
                 $form_html .= addThumbnailPicture($existing_info['FotoExhib1']);
@@ -651,7 +654,7 @@ $form_html .= '</form >';
         </div>
     </div>
    
-    <script src="encuesta_script.js?v=1209"></script>
+    <script src="encuesta_script.js?v=219"></script>
 <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
 <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
 

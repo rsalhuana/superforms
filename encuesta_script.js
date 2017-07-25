@@ -324,19 +324,26 @@ $(document).ready(function () {
         //                     self.submit();
         //                     }
         // });
-        var uploadedImagesMinValue = $('input[name="UploadedImagesMinValue"]').val();
-        var uploadedImagesMaxValue = $('input[name="UploadedImagesMaxValue"]').val();
-        var numberOFUploadedImages = $('input[name="UploadedImages[]"]').length - 1;
-        
-        if(numberOFUploadedImages < uploadedImagesMinValue){
-            $('#div-msg-error').html("Debe agregar al menos " + uploadedImagesMinValue + " fotos");
-            $('#div-msg-error').show();
-        }else if(numberOFUploadedImages > uploadedImagesMaxValue){
-            $('#div-msg-error').html("Solo puede agregar " + uploadedImagesMaxValue + " fotos");
-            $('#div-msg-error').show();
+
+        var idFormulario = $('input[name="idFormulario"]').val();
+        if(idFormulario == 'F003'){
+            var uploadedImagesMinValue = $('input[name="UploadedImagesMinValue"]').val();
+            var uploadedImagesMaxValue = $('input[name="UploadedImagesMaxValue"]').val();
+            var numberOFUploadedImages = $('input[name="UploadedImages[]"]').length - 1;
+            
+            if(numberOFUploadedImages < uploadedImagesMinValue){
+                $('#div-msg-error').html("Debe agregar al menos " + uploadedImagesMinValue + " fotos");
+                $('#div-msg-error').show();
+            }else if(numberOFUploadedImages > uploadedImagesMaxValue){
+                $('#div-msg-error').html("Solo puede agregar " + uploadedImagesMaxValue + " fotos");
+                $('#div-msg-error').show();
+            }else{
+                $('#div-msg-error').html("");
+                $('#div-msg-error').hide();
+                self.submit();
+            }
         }else{
-            $('#div-msg-error').html("");
-            $('#div-msg-error').hide();
+            self.submit();
         }
 
         return false; //is superfluous, but I put it here as a fallback
