@@ -10,6 +10,40 @@ include_once 'phpformbuilder/Form.php';
 include 'check_session.php';
 include 'dbconnect.php';
 
+if($_SERVER["REQUEST_METHOD"] == "GET"){
+    $idFormulario = $_GET['fid'];    
+    $idEncuesta = $_GET['ecid'] ;    
+    $_SESSION['current_step'] = 'encuesta.php?ecid=' . $idEncuesta . '&fid=' . $idFormulario;
+}else{
+    $idFormulario = $_POST['idFormulario'];    
+    $idEncuesta = $_POST['idEncuesta'] ;    
+}
+
+$s_query = "Select *, e.idTipoLocal as 'TipoLocal' FROM Encuesta e join Local l on e.idLocal = l.idLocal WHERE idEncuesta = " . $idEncuesta ;
+$result = mysql_query($s_query);
+$info_encuesta = null;
+while ($row = mysql_fetch_assoc($result)) {
+    $info_encuesta = $row;
+}
+
+$s_query = "Select * From Distribuidora Where idCiudad = '" . $info_encuesta["idCiudad"] . "'";
+$result = mysql_query($s_query);
+$distribuidoras = null;
+while ($row = mysql_fetch_assoc($result)) {
+    $distribuidoras[] = $row;
+}
+
+
+$s_query = "Select * From Formulario Where idForm = '" . $idFormulario . "'";
+$result = mysql_query($s_query);
+$info_formulario = null;
+while ($row = mysql_fetch_assoc($result)) {
+    $info_formulario = $row;
+}
+
+$table_name = $info_formulario['TableName'];
+
+
 function startDependantFields($requiredIf, $showIfValue)
 {
     return '<div id="div' . $requiredIf . '" style="display: none;" data-parent="' . $requiredIf . '" data-show-value="' . $showIfValue . '">';
@@ -18,6 +52,11 @@ function startDependantFields($requiredIf, $showIfValue)
 function endDependantFields()
 {
     return '</div>';
+}
+
+function addOption($name, $value = '', $label = '', $attr = '')
+{
+    return '<option name="' . $name . '" value="' . $value . '" ' . $attr . ' >' . $label . '</option>';
 }
 
 function addThumbnailPicture($pic_name, $details = false){
@@ -46,8 +85,16 @@ function addThumbnailPicture($pic_name, $details = false){
                             </label>
                             <div class="col-sm-8">
 
-                                <select class="form-control" name="' . $pic_name . '-Distribuidor">
-                                <option name="' . $pic_name . '-Distribuidor" value="">Selecciona una Distribuidora</option><option name="' . $pic_name . '-Distribuidor" value="DIS22">CONSUMAX</option><option name="' . $pic_name . '-Distribuidor" value="DIS23">DIGOSAC</option>                                </select>
+                                <select class="form-control" name="' . $pic_name . '-Distribuidor">';
+
+        $boleta_details .= addOption($pic_name ."-Distribuidor", "", "Selecciona una Distribuidora", "");
+
+        foreach ($distribuidoras as $option) {
+            $attr = '';
+            $boleta_details .= addOption($pic_name ."-Distribuidor", $option["idDistribuidora"], $option["Nombre"], $attr);
+        }
+
+        $boleta_details .=      '</select>
                             </div>
                         </div>
                     </td>
@@ -167,10 +214,7 @@ function addRadio($name, $value = '', $label = '', $attr = '', $required = 0)
     return '<input type="radio" id="' . $name . '" name="' . $name . '" value="' . $value . '" ' . $attr . ' ' . $required_html . ' >' . $value . ' ';
 }*/
 
-function addOption($name, $value = '', $label = '', $attr = '')
-{
-    return '<option name="' . $name . '" value="' . $value . '" ' . $attr . ' >' . $label . '</option>';
-}
+
 
 function addInputText($name, $value = '', $label = '', $attr = '')
 {
@@ -186,38 +230,6 @@ function addInputCurrency($name, $value = '', $label = '', $attr = '', $required
     return '<input type="text" class="form-control onlyDecimal" id = "' . $name . '" name="' . $name . '" value="' . $value . '" ' . $attr . ' ' . $required_html . ' />';
 }
 
-if($_SERVER["REQUEST_METHOD"] == "GET"){
-    $idFormulario = $_GET['fid'];    
-    $idEncuesta = $_GET['ecid'] ;    
-    $_SESSION['current_step'] = 'encuesta.php?ecid=' . $idEncuesta . '&fid=' . $idFormulario;
-}else{
-    $idFormulario = $_POST['idFormulario'];    
-    $idEncuesta = $_POST['idEncuesta'] ;    
-}
-
-$s_query = "Select *, e.idTipoLocal as 'TipoLocal' FROM Encuesta e join Local l on e.idLocal = l.idLocal WHERE idEncuesta = " . $idEncuesta ;
-$result = mysql_query($s_query);
-$info_encuesta = null;
-while ($row = mysql_fetch_assoc($result)) {
-    $info_encuesta = $row;
-}
-
-$s_query = "Select * From Distribuidora Where idCiudad = '" . $info_encuesta["idCiudad"] . "'";
-$result = mysql_query($s_query);
-$distribuidoras = null;
-while ($row = mysql_fetch_assoc($result)) {
-    $distribuidoras[] = $row;
-}
-
-
-$s_query = "Select * From Formulario Where idForm = '" . $idFormulario . "'";
-$result = mysql_query($s_query);
-$info_formulario = null;
-while ($row = mysql_fetch_assoc($result)) {
-    $info_formulario = $row;
-}
-
-$table_name = $info_formulario['TableName'];
 
 $previous_page = '';
 if($info_formulario['PreviousFormId'] != null && $info_formulario['PreviousFormId'] != ''){
@@ -312,9 +324,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 }else if($idFormulario == 'F004'){
                     $update['Foto' . $i] = Mysql::SQLValue($img);
                     $distribuidor = str_replace(".","_",$img) . '-Distribuidor';
-                    $update['Distribuidor' . $i] = Mysql::SQLValue($distribuidor);
+                    $update['Distribuidor' . $i] = Mysql::SQLValue($_POST[$distribuidor]);
                     $monto = str_replace(".","_",$img) . '-monto';
-                    $update['MontoBoleta' . $i] = Mysql::SQLValue($monto);
+                    $update['MontoBoleta' . $i] = Mysql::SQLValue($_POST[$monto]);
                 }
                
                 
@@ -709,7 +721,7 @@ $form_html .= '</form >';
         </div>
     </div>
    
-    <script src="encuesta_script.js?v=219"></script>
+    <script src="encuesta_script.js?v=819"></script>
 <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
 <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
 
