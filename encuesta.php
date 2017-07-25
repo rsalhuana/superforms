@@ -722,6 +722,8 @@ $form_html .= '</form >';
                 <td>
                     <span class="size">{%=o.formatFileSize(file.size)%}</span>
                 </td>
+                    <td></td>
+                
                 <td>
                     {% if (file.deleteUrl) { %}
                         <button class="btn btn-danger delete" data-type="{%=file.deleteType%}" data-url="{%=file.deleteUrl%}" onclick="deleteCaption(this);"{% if (file.deleteWithCredentials) { %} data-xhr-fields='{"withCredentials":true}'{% } %}>
@@ -758,8 +760,7 @@ $form_html .= '</form >';
                             </div>
                         </div>
                     </td>
-                    <td></td>
-                    <td >
+                    <td colspan="2">
                         <div class="form-group">
                             <label for="{%=file.name%}-monto" class="col-sm-4 control-label">
                                 Monto Boleta S/.
