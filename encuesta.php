@@ -20,8 +20,8 @@ function endDependantFields()
     return '</div>';
 }
 
-function addThumbnailPicture($pic_name){
-    return '<tr class="template-download fade in">
+function addThumbnailPicture($pic_name, $details = false){
+        $thumbnail_pic = '<tr class="template-download fade in">
                 <td>
                     <span class="preview">
                             <img src="/phpformbuilder/images/uploads/thumbnail/' . $pic_name . '">
@@ -37,6 +37,37 @@ function addThumbnailPicture($pic_name){
                         </button>
                 </td>
             </tr>';
+
+        $boleta_details = '<tr class="template-download fade in">
+                    <td colspan="2">
+                        <div class="form-group">
+                            <label for="' . $pic_name . '-Distribuidor" class="col-sm-4 control-label">
+                                Distribuidor
+                            </label>
+                            <div class="col-sm-8">
+
+                                <select class="form-control" name="' . $pic_name . '-Distribuidor">
+                                <option name="' . $pic_name . '-Distribuidor" value="">Selecciona una Distribuidora</option><option name="' . $pic_name . '-Distribuidor" value="DIS22">CONSUMAX</option><option name="' . $pic_name . '-Distribuidor" value="DIS23">DIGOSAC</option>                                </select>
+                            </div>
+                        </div>
+                    </td>
+                    <td colspan="2">
+                        <div class="form-group">
+                            <label for="' . $pic_name . '-monto" class="col-sm-4 control-label">
+                                Monto Boleta S/.
+                            </label>
+                            <div class="col-sm-8">
+                                <input type="number" class="form-control onlyDecimal" name="' . $pic_name . '-monto" value="">
+                            </div>
+                        </div>
+                    </td>
+                </tr>';
+
+        if($details){
+            $thumbnail_pic .= $boleta_details;
+        }
+
+        return $thumbnail_pic;
 }
 
 function addTextarea($name, $value = '', $label = '', $attr = '', $required = 0)
@@ -272,9 +303,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $uploaded_images = $_POST[$row['FieldName']];
             $i = 0;
             foreach($uploaded_images as $img){
-                if($i == 3){ $i = 0;}
+                if($i == $row['MaxValue']){ 
+                    $i = 0;
+                }
                 $i++;
-                $update['FotoExhib' . $i] = Mysql::SQLValue($img);
+                if($idFormulario == 'F003'){
+                    $update['FotoExhib' . $i] = Mysql::SQLValue($img);
+                }else if($idFormulario == 'F004'){
+                    $update['Foto' . $i] = Mysql::SQLValue($img);
+                    $distribuidor = str_replace(".","_",$img) . '-Distribuidor';
+                    $update['Distribuidor' . $i] = Mysql::SQLValue($distribuidor);
+                    $monto = str_replace(".","_",$img) . '-monto';
+                    $update['MontoBoleta' . $i] = Mysql::SQLValue($monto);
+                }
+               
                 
                 //$caption = str_replace(".","_",$img) . '-caption';
                 //echo "<p>comentario: " . $_POST[$caption] . "</p>";
@@ -517,19 +559,32 @@ foreach($all_fields as $row){
         if($idFormulario == 'F003'){
              $form_html .= addHtml('<span class="help-block">Elija ' . $row['MaxValue'] . ' fotos.</span>');
         }
-        
-        if($existing_info != null && $idFormulario == 'F003'){
-            
-            if($existing_info['FotoExhib1'] != null && $existing_info['FotoExhib1'] != ''){
-                $form_html .= addThumbnailPicture($existing_info['FotoExhib1']);
-            }
-            if($existing_info['FotoExhib2'] != null && $existing_info['FotoExhib2'] != ''){
-                $form_html .= addThumbnailPicture($existing_info['FotoExhib2']);
-            }
-            if($existing_info['FotoExhib3'] != null && $existing_info['FotoExhib3'] != ''){
-                $form_html .= addThumbnailPicture($existing_info['FotoExhib3']);
+
+        if($existing_info != null){
+            for ($x = 1; $x <= $row['MaxValue']; $x++) {
+                if($idFormulario == 'F003'){
+                    if($existing_info['FotoExhib' . $x] != null && $existing_info['FotoExhib'.$x] != ''){
+                        $form_html .= addThumbnailPicture($existing_info['FotoExhib'.$x]);
+                    }
+                } else if($idFormulario == 'F004'){
+                    if($existing_info['Foto' . $x] != null && $existing_info['Foto'.$x] != ''){
+                        $form_html .= addThumbnailPicture($existing_info['Foto'.$x], true);
+                    }
+                }
             }
         }
+        
+        // if($existing_info != null && $idFormulario == 'F003'){
+        //     if($existing_info['FotoExhib1'] != null && $existing_info['FotoExhib1'] != ''){
+        //         $form_html .= addThumbnailPicture($existing_info['FotoExhib1']);
+        //     }
+        //     if($existing_info['FotoExhib2'] != null && $existing_info['FotoExhib2'] != ''){
+        //         $form_html .= addThumbnailPicture($existing_info['FotoExhib2']);
+        //     }
+        //     if($existing_info['FotoExhib3'] != null && $existing_info['FotoExhib3'] != ''){
+        //         $form_html .= addThumbnailPicture($existing_info['FotoExhib3']);
+        //     }
+        // }
         $form_html .= addHtml('</tbody></table>');
     }
     else
@@ -722,7 +777,8 @@ $form_html .= '</form >';
                 <td>
                     <span class="size">{%=o.formatFileSize(file.size)%}</span>
                 </td>
-                    <td></td>
+                    
+                <td></td>
                 
                 <td>
                     {% if (file.deleteUrl) { %}
