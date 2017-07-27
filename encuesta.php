@@ -694,6 +694,10 @@ $form_html .= '</form >';
             border-radius: 50%;
         }
        
+        .logo_top{
+            margin-top:10px;
+        }
+       
     </style>
 </head>
 <body>
