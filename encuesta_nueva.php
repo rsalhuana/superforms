@@ -227,14 +227,15 @@ mysql_close($link);
     <?php 
     include "enc-menu.php"; 
 
-    echo '<p class="alert alert-info">' . $msg_welcome . '</p>';
-    
     if($msg_it_already_exists != '') {
         echo '<p class="alert alert-info">' . $msg_it_already_exists . '</p>';
     }
     if($msg != ''){ 
         echo '<p class="alert alert-danger">' . $msg . '</p>'; 
     } 
+
+    echo '<p class="alert alert-info">' . $msg_welcome . '</p>';
+    
     ?> 
     
     <center> 

@@ -318,7 +318,6 @@ $(document).ready(function () {
 
     $("#frmenc").submit(function(e) {
         var self = this;
-        e.preventDefault();
         // jQuery.fancybox('<div class="box">Some amazing wonderful content</div>', {
         //     'onClosed' : function() { 
         //                     self.submit();
@@ -327,6 +326,7 @@ $(document).ready(function () {
 
         var idFormulario = $('input[name="idFormulario"]').val();
         if(idFormulario == 'F003' || idFormulario == 'F004'){
+            e.preventDefault();
             var uploadedImagesMinValue = $('input[name="UploadedImagesMinValue"]').val();
             var uploadedImagesMaxValue = $('input[name="UploadedImagesMaxValue"]').val();
             var numberOFUploadedImages = $('input[name="UploadedImages[]"]').length - 1;
@@ -354,11 +354,11 @@ $(document).ready(function () {
                 self.submit();
             }
         }*/ 
-        else {
+       /* else if ($('input[name=PAPEL_HIGIENICO_ELITE_DOBLE_HOJA_ECONOMICO_NARANJA]:checked').val()) {          
             self.submit();
-        }
+        }*/
 
-        return false; //is superfluous, but I put it here as a fallback
+        //return false; //is superfluous, but I put it here as a fallback
     });
 
     $('.onlyDecimal').keydown(function (event) {

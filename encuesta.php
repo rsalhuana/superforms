@@ -703,7 +703,7 @@ $form_html .= '</form >';
 <body>
     <?php include "enc-menu.php"; ?>
     <?php 
-    if($validation_messages != ''){
+    if(isset($validation_messages) && $validation_messages != ''){
         echo '<p class="alert alert-danger"><b>Debe completar la siguiente información: </b></br>' . $validation_messages . '</p>';
     }
 
@@ -713,7 +713,7 @@ $form_html .= '</form >';
 
     ?>
     <p id="div-msg-error" class="alert alert-danger" style="display:none"></p>
-    <center> <img src="LOGO_HORIZONTAL.png" width="300px"> </center>
+    <center> <img src="LOGO_HORIZONTAL.png" width="300px" class="logo_top"> </center>
     <h3 class="text-center"><?php echo $local_name; ?> </br></br> <?php echo $page_title; ?> </h3>
     
     <div class="container">
@@ -725,7 +725,7 @@ $form_html .= '</form >';
         </div>
     </div>
    
-    <script src="encuesta_script.js?v=819"></script>
+    <script src="encuesta_script.js?v=4732"></script>
 <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
 <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
 
