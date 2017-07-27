@@ -714,8 +714,8 @@ $form_html .= '</form >';
     ?>
     <p id="div-msg-error" class="alert alert-danger" style="display:none"></p>
     <center> <img src="LOGO_HORIZONTAL.png" width="300px" class="logo_top"> </center>
-    <h3 class="text-center"><?php echo $local_name; ?> </br></br> <?php echo $page_title; ?> </h3>
-    
+    <h4 class="text-center"><?php echo $local_name; ?></h4>
+    <h4 class="text-center"><b><?php echo $page_title; ?> </b></h4>
     <div class="container">
    
             <div class="row">
