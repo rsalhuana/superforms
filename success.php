@@ -33,10 +33,12 @@ $nombre_local = $info_encuesta["Local"];
     <!-- Bootstrap CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     
-
-    <script type="text/javascript">
-        
-        </script>
+    <style>
+       .logo_top{
+            margin-top:10px;
+        }
+       
+    </style>
 </head>
 <body>
      <?php include "enc-menu.php"; ?>
@@ -46,7 +48,7 @@ $nombre_local = $info_encuesta["Local"];
     <div class="container">
         <div class="row">
             <div class="col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2">
-            <center> <img src="LOGO_HORIZONTAL.png" width="300px"> </center>
+            <center> <img src="LOGO_HORIZONTAL.png" width="300px" class="logo_top"> </center>
             <h3>
                 <?php echo 'La encuesta fue grabada satisfactoriamente para el local: </br><b>' . $nombre_local . '</b>'; ?>
             </h3>

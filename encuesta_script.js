@@ -227,72 +227,29 @@ $(document).ready(function () {
         }
     });
 
-    // $(".input-file-img").fileinput({
-    //     'showUpload': false
-    // });
-    $("input[name='Colgante'],input[name='Jalavista'],input[name='TachoDispensador'],input[name='BannerToldo']").click(function() {
-        var isChecked = false;
-        var isValid = false;
-        $("input[name='Colgante'],input[name='Jalavista'],input[name='TachoDispensador'],input[name='BannerToldo']").each(function() {
-            if($(this).is(':checked') && $(this).val() == 'Si') {
-                isChecked = true;
-                isValid = true;
-            }
-        });
-        if (isChecked == true) {
-            $('#MaterialPOP_Si').prop("checked", true);
-        } else {
-            //$('#MaterialPOP_No').prop("checked", true);
+    $("input[name='MaterialPOP']").each(function() {
+        
+        if($(this).is(':checked') && $(this).val() == 'Si') {
+            $("#divMaterialPOP").show();
+            //alert("Si");
         }
-        $('#div-msg-error').hide();
-        $('#btn-submit-form').removeClass('btn disabled');
-        $('#btn-submit-form').prop('disabled', false);
-        if (isValid == false) {
-            $('#btn-submit-form').addClass('btn disabled');
-            $('#btn-submit-form').prop('disabled', true);
-            $('#div-msg-error').html("Error debe seleccionar por lo menos uno.");
-            $('#div-msg-error').show();
-        }
+        // }else{
+        //     $("#divMaterialPOP").hide();
+        //     alert("No");
+        // }
     });
-    if($("input[name$='MaterialPOP']").val() == "No"){
-        $('#div-id-Colgante').hide();
-        $('#div-id-Jalavista').hide();
-        $('#div-id-TachoDispensador').hide();
-        $('#div-id-BannerToldo').hide();
-    }
+
+  
     $("input[name$='MaterialPOP']").click(function() {
         var answer = $(this).val();
         
         if(answer == "Si"){
-            $('#div-id-Colgante').show();
-            $('#div-id-Jalavista').show();
-            $('#div-id-TachoDispensador').show();
-            $('#div-id-BannerToldo').show();
-            var isChecked = false;
-            var isValid = false;
-            $("input[name='Colgante'],input[name='Jalavista'],input[name='TachoDispensador'],input[name='BannerToldo']").each(function() {
-                if($(this).is(':checked') && $(this).val() == 'Si') {
-                    isChecked = true;
-                    isValid = true;
-                }
-            });
-            $('#div-msg-error').hide();
-            $('#btn-submit-form').removeClass('btn disabled');
-            $('#btn-submit-form').prop('disabled', false);
-            if (isValid == false) {
-                $('#btn-submit-form').addClass('btn disabled');
-                $('#btn-submit-form').prop('disabled', true);
-                $('#div-msg-error').html("Error debe seleccionar por lo menos uno.");
-                $('#div-msg-error').show();
-            }
+            $("#divMaterialPOP").show();
         }else{
-            $('#div-id-Colgante').hide();
-            $('#div-id-Jalavista').hide();
-            $('#div-id-TachoDispensador').hide();
-            $('#div-id-BannerToldo').hide();
-            $('#div-msg-error').hide();
-            $('#btn-submit-form').removeClass('btn disabled');
-            $('#btn-submit-form').prop('disabled', false);
+            $("input[name='Colgante'],input[name='Jalavista'],input[name='TachoDispensador'],input[name='BannerToldo']").each(function() {
+                $(this).prop('checked', false);
+            })
+            $("#divMaterialPOP").hide();
         }
         
     });
@@ -318,12 +275,7 @@ $(document).ready(function () {
 
     $("#frmenc").submit(function(e) {
         var self = this;
-        // jQuery.fancybox('<div class="box">Some amazing wonderful content</div>', {
-        //     'onClosed' : function() { 
-        //                     self.submit();
-        //                     }
-        // });
-
+        
         var idFormulario = $('input[name="idFormulario"]').val();
         if(idFormulario == 'F003' || idFormulario == 'F004'){
             e.preventDefault();
@@ -342,23 +294,28 @@ $(document).ready(function () {
                 $('#div-msg-error').hide();
                 self.submit();
             }
-        } /*else if(idFormulario == 'F004'){
-            var uploadedImagesMaxValue = $('input[name="UploadedImagesMaxValue"]').val();
-            var numberOFUploadedImages = $('input[name="UploadedImages[]"]').length - 1;
-            if(numberOFUploadedImages > uploadedImagesMaxValue){
-                $('#div-msg-error').html("Solo puede agregar " + uploadedImagesMaxValue + " fotos");
-                $('#div-msg-error').show();
-            }else{
-                $('#div-msg-error').html("");
-                $('#div-msg-error').hide();
-                self.submit();
-            }
-        }*/ 
-       /* else if ($('input[name=PAPEL_HIGIENICO_ELITE_DOBLE_HOJA_ECONOMICO_NARANJA]:checked').val()) {          
-            self.submit();
-        }*/
+        }else if(idFormulario == 'F002'){
+            if($('#MaterialPOP_Si').is(':checked')){
+                e.preventDefault();
+                var isMaterialPOPSelected = false;
+                $("input[name='Colgante'],input[name='Jalavista'],input[name='TachoDispensador'],input[name='BannerToldo']").each(function() {
+                    if($(this).is(':checked') && $(this).val() == 'Si') {
+                        isMaterialPOPSelected = true;
+                        return false;
+                    }
+                });
 
-        //return false; //is superfluous, but I put it here as a fallback
+                if(isMaterialPOPSelected){
+                    $('#div-msg-error').html("");
+                    $('#div-msg-error').hide();
+                    self.submit();
+                }else{
+                    $('#div-msg-error').html("No ha elegido ninguna opción de Material POP");
+                    $('#div-msg-error').show();
+                }
+            }
+        }
+     
     });
 
     $('.onlyDecimal').keydown(function (event) {

@@ -204,8 +204,8 @@ function addRadio($name, $value = '', $label = '', $attr = '', $required = 0)
     }
     return '<input type="radio" id="' . $name .'_'.$value . '" name="' . $name . '" value="' . $value . '" ' . $attr . ' ' . $required_html . ' >' . $value . ' ';
 }
-
-/*function addRadio($name, $value = '', $label = '', $attr = '', $required = 0)
+/*
+function addRadio($name, $value = '', $label = '', $attr = '', $required = 0)
 {
     $required_html = '';
     if ($required == 1) {
@@ -725,7 +725,7 @@ $form_html .= '</form >';
         </div>
     </div>
    
-    <script src="encuesta_script.js?v=4732"></script>
+    <script src="encuesta_script.js?v=93"></script>
 <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
 <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
 
@@ -820,7 +820,7 @@ $form_html .= '</form >';
                             </label>
                             <div class="col-sm-8">
 
-                                <select class="form-control" name="{%=file.name%}-Distribuidor">
+                                <select class="form-control" name="{%=file.name%}-Distribuidor" required>
                                 <?php 
                                     $form_html = addOption("{%=file.name%}-Distribuidor", "", "Selecciona una Distribuidora", '');
                                     foreach ($distribuidoras as $option) {
@@ -838,7 +838,7 @@ $form_html .= '</form >';
                                 Monto Boleta S/.
                             </label>
                             <div class="col-sm-8">
-                                <input type="number" class="form-control onlyDecimal" name="{%=file.name%}-monto" value="">
+                                <input type="number" class="form-control onlyDecimal" name="{%=file.name%}-monto" value="" required>
                             </div>
                         </div>
                     </td>
