@@ -52,7 +52,7 @@ $nombre_local = $info_encuesta["Local"];
             <div class="col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2">
             <center> <img src="LOGO_HORIZONTAL.png" width="300px" class="logo_top"> </center>
             <h3>
-                <?php echo 'La encuesta fue grabada satisfactoriamente para el local: </br><b>' . $nombre_local . '</b>'; ?>
+               <center> <?php echo 'La encuesta fue grabada satisfactoriamente para el local: </br><b>' . $nombre_local . '</b>'; ?></center>
             </h3>
             </div>
         </div>
