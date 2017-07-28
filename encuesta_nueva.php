@@ -66,11 +66,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && Form::testToken('sm-encuesta-nueva-f
                     $sql = $db->buildSQLUpdate('Encuesta', $update_encuesta, $filter);
 
                     if(!mysql_query( $sql, $link )){
-                        $error_msg = 'Mensaje: </br>' . mysql_error();
+                        $msg = 'Mensaje: </br>' . mysql_error();
                     } 
                 }
 
-                if($error_msg != ''){
+                if($msg == ''){
                     $next_form = 'F001';
                     //$tipolocal_id = $fila['idTipoLocal'];
                     if($tipolocal_id == 'TIP01'){ //Multicategoria
@@ -84,9 +84,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && Form::testToken('sm-encuesta-nueva-f
                     header("Location: encuesta.php?ecid=" . $fila['idEncuesta'] . '&fid=' . $next_form);
                     exit();
                 }
+            }else{
+                $msg_it_already_exists = 'Ya se realizó una encuesta para ese local.';
             }
-            //$msg_it_already_exists = '<p class="alert alert-danger">Ya se realizó una encuesta para ese local.</p>';
-            $msg_it_already_exists = 'Ya se realizó una encuesta para ese local.';
         }
 
         if($msg_it_already_exists == ''){
