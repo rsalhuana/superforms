@@ -60,8 +60,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && Form::testToken('sm-encuesta-nueva-f
         while ($fila = mysql_fetch_assoc($encuesta)) {
             if($fila['HoraFin'] == null || $fila['HoraFin'] == ''){
 
+                if($fila['idTipoLocal'] != $tipolocal_id){
+                    $filter['idEncuesta'] = Mysql::sqlValue($fila['idEncuesta'], Mysql::SQLVALUE_NUMBER);
+                    $update_encuesta['idTipoLocal'] = Mysql::SQLValue($tipolocal_id);
+                    $sql = $db->buildSQLUpdate('Encuesta', $update_encuesta, $filter);
+
+                    if(!mysql_query( $sql, $link )){
+                        $error_msg = 'Mensaje: </br>' . mysql_error();
+                    } 
+                }
+
                 $next_form = 'F001';
-                $tipolocal_id = $fila['idTipoLocal'];
+                //$tipolocal_id = $fila['idTipoLocal'];
                 if($tipolocal_id == 'TIP01'){ //Multicategoria
                     $next_form = 'F006';
                 } else if($tipolocal_id == 'TIP02'){ //Envase Descartable
@@ -72,6 +82,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && Form::testToken('sm-encuesta-nueva-f
 
                 header("Location: encuesta.php?ecid=" . $fila['idEncuesta'] . '&fid=' . $next_form);
                 exit();
+                
             }
             //$msg_it_already_exists = '<p class="alert alert-danger">Ya se realizó una encuesta para ese local.</p>';
             $msg_it_already_exists = 'Ya se realizó una encuesta para ese local.';
@@ -235,7 +246,7 @@ mysql_close($link);
     } 
 
     echo '<p class="alert alert-info">' . $msg_welcome . '</p>';
-    
+
     ?> 
     
     <center> 
