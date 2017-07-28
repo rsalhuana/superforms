@@ -70,19 +70,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && Form::testToken('sm-encuesta-nueva-f
                     } 
                 }
 
-                $next_form = 'F001';
-                //$tipolocal_id = $fila['idTipoLocal'];
-                if($tipolocal_id == 'TIP01'){ //Multicategoria
-                    $next_form = 'F006';
-                } else if($tipolocal_id == 'TIP02'){ //Envase Descartable
-                    $next_form = 'F008';
-                } else if($tipolocal_id == 'TIP03'){// Sanitario
+                if($error_msg != ''){
                     $next_form = 'F001';
-                }
+                    //$tipolocal_id = $fila['idTipoLocal'];
+                    if($tipolocal_id == 'TIP01'){ //Multicategoria
+                        $next_form = 'F006';
+                    } else if($tipolocal_id == 'TIP02'){ //Envase Descartable
+                        $next_form = 'F008';
+                    } else if($tipolocal_id == 'TIP03'){// Sanitario
+                        $next_form = 'F001';
+                    }
 
-                header("Location: encuesta.php?ecid=" . $fila['idEncuesta'] . '&fid=' . $next_form);
-                exit();
-                
+                    header("Location: encuesta.php?ecid=" . $fila['idEncuesta'] . '&fid=' . $next_form);
+                    exit();
+                }
             }
             //$msg_it_already_exists = '<p class="alert alert-danger">Ya se realizó una encuesta para ese local.</p>';
             $msg_it_already_exists = 'Ya se realizó una encuesta para ese local.';
