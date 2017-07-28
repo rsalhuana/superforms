@@ -278,23 +278,24 @@ $(document).ready(function () {
         
         var idFormulario = $('input[name="idFormulario"]').val();
         if(idFormulario == 'F003' || idFormulario == 'F004'){
-            e.preventDefault();
             var uploadedImagesMinValue = $('input[name="UploadedImagesMinValue"]').val();
             var uploadedImagesMaxValue = $('input[name="UploadedImagesMaxValue"]').val();
             var numberOFUploadedImages = $('input[name="UploadedImages[]"]').length - 1;
             
             if(numberOFUploadedImages < uploadedImagesMinValue){
+                e.preventDefault();                
                 $('#div-msg-error').html("Debe agregar al menos " + uploadedImagesMinValue + " fotos");
                 $('#div-msg-error').show();
             }else if(numberOFUploadedImages > uploadedImagesMaxValue){
+                e.preventDefault();            
                 $('#div-msg-error').html("Solo puede agregar " + uploadedImagesMaxValue + " fotos");
                 $('#div-msg-error').show();
             }else{
                 $('#div-msg-error').html("");
                 $('#div-msg-error').hide();
-                self.submit();
+                //self.submit();
             }
-        }else if(idFormulario == 'F002'){
+        } else if(idFormulario == 'F002'){
             if($('#MaterialPOP_Si').is(':checked')){
                 e.preventDefault();
                 var isMaterialPOPSelected = false;

@@ -59,21 +59,20 @@ function addOption($name, $value = '', $label = '', $attr = '')
     return '<option name="' . $name . '" value="' . $value . '" ' . $attr . ' >' . $label . '</option>';
 }
 
-function addThumbnailPicture($pic_name, $details = false){
+function addThumbnailPicture($pic_name, $distribuidor = '', $monto_boleta = '', $distribuidoras = '', $boleta_min_value = '0', $boleta_max_value='900000'){
         $thumbnail_pic = '<tr class="template-download fade in">
-                <td>
+                <td colspan="2">
                     <span class="preview">
                             <img src="/phpformbuilder/images/uploads/thumbnail/' . $pic_name . '">
 		            </span>
                     <input type="hidden" name="UploadedImages[]" value="' . $pic_name . '">
                 </td>
+                <td></td>
                 <td>
-                </td>
-                <td>
-                        <button class="btn btn-danger delete" data-type="DELETE" data-url="/superforms/phpformbuilder/plugins/jQuery-File-Upload/server/php/imageFileUpload.php?file=' . $pic_name . '" onclick="deleteCaption(this);">
-                            <i class="glyphicon glyphicon-trash"></i>
-                            <span>Eliminar</span>
-                        </button>
+                    <button class="btn btn-danger delete" data-type="DELETE" data-url="/superforms/phpformbuilder/plugins/jQuery-File-Upload/server/php/imageFileUpload.php?file=' . $pic_name . '" onclick="deleteCaption(this);">
+                        <i class="glyphicon glyphicon-trash"></i>
+                        <span>Eliminar</span>
+                    </button>
                 </td>
             </tr>';
 
@@ -85,12 +84,17 @@ function addThumbnailPicture($pic_name, $details = false){
                             </label>
                             <div class="col-sm-8">
 
-                                <select class="form-control" name="' . $pic_name . '-Distribuidor">';
+                                <select class="form-control" name="' . $pic_name . '-Distribuidor" required>';
 
         $boleta_details .= addOption($pic_name ."-Distribuidor", "", "Selecciona una Distribuidora", "");
 
         foreach ($distribuidoras as $option) {
             $attr = '';
+
+            if($option["idDistribuidora"] == $distribuidor){
+                $attr = 'selected';
+            }
+
             $boleta_details .= addOption($pic_name ."-Distribuidor", $option["idDistribuidora"], $option["Nombre"], $attr);
         }
 
@@ -104,13 +108,13 @@ function addThumbnailPicture($pic_name, $details = false){
                                 Monto Boleta S/.
                             </label>
                             <div class="col-sm-8">
-                                <input type="number" class="form-control onlyDecimal" name="' . $pic_name . '-monto" value="">
+                                <input type="number" class="form-control onlyDecimal" name="' . $pic_name . '-monto" value="' . $monto_boleta . '" min="' . $boleta_min_value .  '" max="' . $boleta_max_value .  '" required>
                             </div>
                         </div>
                     </td>
                 </tr>';
 
-        if($details){
+        if($distribuidor != ''){
             $thumbnail_pic .= $boleta_details;
         }
 
@@ -580,7 +584,7 @@ foreach($all_fields as $row){
                     }
                 } else if($idFormulario == 'F004'){
                     if($existing_info['Foto' . $x] != null && $existing_info['Foto'.$x] != ''){
-                        $form_html .= addThumbnailPicture($existing_info['Foto'.$x], true);
+                        $form_html .= addThumbnailPicture($existing_info['Foto'.$x], $existing_info['Distribuidor'.$x], $existing_info['MontoBoleta'.$x], $distribuidoras);
                     }
                 }
             }
@@ -700,7 +704,7 @@ $form_html .= '</form >';
        
     </style>
 </head>
-<body>
+<body onload="nobackbutton();">
     <?php include "enc-menu.php"; ?>
     <?php 
     if(isset($validation_messages) && $validation_messages != ''){
@@ -725,7 +729,8 @@ $form_html .= '</form >';
         </div>
     </div>
    
-    <script src="encuesta_script.js?v=93"></script>
+    <script src="encuesta_script.js?v=958"></script>
+    <script src="commons.js"></script>
 <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
 <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
 

@@ -26,6 +26,7 @@ $nombre_local = $info_encuesta["Local"];
      <link href="select.css" rel="stylesheet">
      <!-- jQuery -->
     <script src="//code.jquery.com/jquery.js"></script>
+    
         <link href="menu.css" rel="stylesheet">
     <script src="menu.js"></script>
     <!-- Bootstrap JavaScript -->
@@ -39,10 +40,11 @@ $nombre_local = $info_encuesta["Local"];
         }
        
     </style>
+    <script src="commons.js"></script>
+    
 </head>
-<body>
+<body onload="nobackbutton();">
      <?php include "enc-menu.php"; ?>
-
 
 
     <div class="container">
