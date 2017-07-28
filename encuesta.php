@@ -282,23 +282,6 @@ while ($row = mysql_fetch_assoc($form_fields)) {
     validation if posted
 ============================================= */
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // $target_dir = "uploads/";
-    // $uploads_img = array();
-    // if (is_array($_FILES) && count($_FILES) > 0) {
-    //     foreach ($_FILES as $n => $f) {
-    //         if ($f["name"] != "") {
-    //             $name_file = time() . "-" . basename($f["name"]);
-    //             $name_file = str_replace(" ", "_", $name_file);
-    //             $target_file = $target_dir . $name_file;
-
-    //             if (move_uploaded_file($f["tmp_name"], $target_file)) {
-    //                 $uploads_img[$n] = $name_file;
-    //             } else {
-    //                 echo "Hubo un problema al cargar la foto.";
-    //             }
-    //         }
-    //     }
-    // }
     require_once 'phpformbuilder/database/Mysql.php';
     $db = new Mysql();
 
@@ -306,16 +289,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     foreach($all_fields as $row)
     {
-        // if($row['Type'] == 'file-image')
-        // {
-        //     $uploaded_images = json_encode($_POST[$row['FieldName']]);
-        //     if (array_key_exists($row['FieldName'], $uploads_img)) {
-        //         $update[$row['FieldName']] = Mysql::SQLValue($uploads_img[$row['FieldName']]);
-        //     }
-        // }
         if($row['FieldName'] == 'UploadedImages')
         {
-            //$uploaded_images = json_encode($_POST[$row['FieldName']]);
             $uploaded_images = $_POST[$row['FieldName']];
             $i = 0;
             foreach($uploaded_images as $img){
@@ -332,10 +307,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $monto = str_replace(".","_",$img) . '-monto';
                     $update['MontoBoleta' . $i] = Mysql::SQLValue($_POST[$monto]);
                 }
-               
-                
-                //$caption = str_replace(".","_",$img) . '-caption';
-                //echo "<p>comentario: " . $_POST[$caption] . "</p>";
             }
         }
         else
