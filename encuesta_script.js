@@ -1,6 +1,12 @@
 $(document).ready(function () {
     //jQuery.validator.format("{0} debe tener un valor");
-    $.extend($.validator.messages, { required: "Este campo es obligatorio." });
+    $.extend(
+        $.validator.messages, { 
+            required: "Este campo es obligatorio.",
+            max: jQuery.validator.format("Ingrese un monto menor que {0}."),
+            min: jQuery.validator.format("Ingrese un monto mayor a {0}."),
+            number: "Ingrese un monto correcto."
+        });
     $('#frmenc').validate({ // initialize the plugin
         //set this to false if you don't what to set focus on the first invalid input
         focusInvalid: false,

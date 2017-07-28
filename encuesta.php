@@ -108,7 +108,7 @@ function addThumbnailPicture($pic_name, $distribuidor = '', $monto_boleta = '', 
                                 Monto Boleta S/.
                             </label>
                             <div class="col-sm-8">
-                                <input type="number" class="form-control onlyDecimal" name="' . $pic_name . '-monto" value="' . $monto_boleta . '" min="' . $boleta_min_value .  '" max="' . $boleta_max_value .  '" required>
+                                <input type="number" class="form-control" name="' . $pic_name . '-monto" value="' . $monto_boleta . '" min="' . $boleta_min_value .  '" max="' . $boleta_max_value .  '" required>
                             </div>
                         </div>
                     </td>
@@ -231,7 +231,7 @@ function addInputCurrency($name, $value = '', $label = '', $attr = '', $required
     if ($required == 1) {
         $required_html = 'required';
     }
-    return '<input type="text" class="form-control onlyDecimal" id = "' . $name . '" name="' . $name . '" value="' . $value . '" ' . $attr . ' ' . $required_html . ' />';
+    return '<input type="text" class="form-control" id = "' . $name . '" name="' . $name . '" value="' . $value . '" ' . $attr . ' ' . $required_html . ' />';
 }
 
 
@@ -700,7 +700,7 @@ $form_html .= '</form >';
         </div>
     </div>
    
-    <script src="encuesta_script.js?v=28"></script>
+    <script src="encuesta_script.js?v=6"></script>
     <script src="commons.js"></script>
 <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
 <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
@@ -814,7 +814,7 @@ $form_html .= '</form >';
                                 Monto Boleta S/.
                             </label>
                             <div class="col-sm-8">
-                                <input type="number" class="form-control onlyDecimal" name="{%=file.name%}-monto" value="" required>
+                                <input type="number" class="form-control" name="{%=file.name%}-monto" value="" min="0" required>
                             </div>
                         </div>
                     </td>
