@@ -175,7 +175,10 @@ $form->addHtml('<p><select name="local" id="local">');
 $form->addHtml('<option value="">Seleccione Local</option>');
 
 if(isset($_POST["ciudad"]) && !empty($_POST["ciudad"]) && $_POST["ciudad"] != $LIMA_CIUDAD_ID){
-    $locales = mysql_query("select * from Local l Join Asignacion a on l.idLocal = a.idLocal where idCiudad = '" .  $_POST['ciudad'] . "' AND a.idUsuario = ". $_SESSION['userid'] . " Order by Local ASC");
+    $locales = mysql_query("select * from Local l Join Asignacion a on l.idLocal = a.idLocal where idCiudad = '" .  $_POST['ciudad'] 
+    . "' AND a.idUsuario = '". $_SESSION['userid'] 
+    . "' AND a.idSemana = '" . $_POST['semana'] . "' Order by Local ASC");
+
     while ($row = mysql_fetch_assoc($locales)) {
         $selected_att = '';
         if($local_id == $row['idLocal']){
@@ -184,8 +187,10 @@ if(isset($_POST["ciudad"]) && !empty($_POST["ciudad"]) && $_POST["ciudad"] != $L
         $form->addHtml('<option value="'.$row['idLocal'].'">'.$row['Local'].'</option>');
     }
 }else if(isset($_POST["distrito"]) && !empty($_POST["distrito"])){
-    //$locales = mysql_query("Select * FROM Local l Join Asignacion a on l.idLocal = a.idLocal WHERE idDistrito = '" . $_POST['distrito_id'] . "' AND a.idUsuario = '". $_SESSION['userid'] ."' AND a.idSemana = '" . $_POST['semana'] . "' Order by Local ASC");
-    $locales = mysql_query("Select * FROM Local l Join Asignacion a on l.idLocal = a.idLocal WHERE idDistrito = '" . $_POST['distrito'] . "' AND a.idUsuario = ". $_SESSION['userid'] ." Order by Local ASC");
+    $locales = mysql_query("Select * FROM Local l Join Asignacion a on l.idLocal = a.idLocal WHERE idDistrito = '" . $_POST['distrito'] 
+    . "' AND a.idUsuario = '". $_SESSION['userid'] 
+    . "' AND a.idSemana = '" . $_POST['semana'] . "' Order by Local ASC");
+    //$locales = mysql_query("Select * FROM Local l Join Asignacion a on l.idLocal = a.idLocal WHERE idDistrito = '" . $_POST['distrito'] . "' AND a.idUsuario = ". $_SESSION['userid'] ." Order by Local ASC");
 
     while ($row = mysql_fetch_assoc($locales)) {
         $selected_att = '';

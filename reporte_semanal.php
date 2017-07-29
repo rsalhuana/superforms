@@ -49,11 +49,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
         $exhib_fields[] = $row;
     }
 
-    $s_query = "Select * From TabExhibSanitario tes "
+    $s_query = "Select * From " . $table_name . " tes "
     . "Join Encuesta e on tes.idEncuesta = e.idEncuesta "
     . "Join Local l on l.idLocal = e.idLocal "
     . "Join Semana s on s.idSemana = e.idSemana "
-    . "WHERE e.idTipoLocal = '" . $tipolocal_id . "' And e.idSemana = 'SEM01' And l.idCiudad = '" . $ciudad_id . "'";
+    . "WHERE e.idTipoLocal = '" . $tipolocal_id . "' And e.idSemana = '" . $semana_id . "' And l.idCiudad = '" . $ciudad_id . "'";
 
     //echo $s_query;
 
@@ -172,7 +172,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 <option value="">Seleccione Semana</option>
 <?php
 $fecha_hoy = date("Y-m-d H:i:s");
-$semanas = mysql_query("Select * From Semana Where FechaInicio < '" . $fecha_hoy . "' and FechaFin > '" . $fecha_hoy . "'");
+//$semanas = mysql_query("Select * From Semana Where FechaInicio < '" . $fecha_hoy . "' and FechaFin > '" . $fecha_hoy . "'");
+$semanas = mysql_query("Select * From Semana Where month(FechaInicio) =" . $_POST );
 while ($row = mysql_fetch_assoc($semanas)) {
     $attr = '';
     if(isset($_POST['semana']) && $row['idSemana'] == $_POST['semana']){
