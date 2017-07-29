@@ -55,6 +55,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
     . "Join Semana s on s.idSemana = e.idSemana "
     . "WHERE e.idTipoLocal = '" . $tipolocal_id . "' And e.idSemana = 'SEM01' And l.idCiudad = '" . $ciudad_id . "'";
 
+    //echo $s_query;
+
     // $s_query = "Select s.SemanaMes, tes.* 
     // From TabExhibSanitario tes
     // Join Encuesta e on tes.idEncuesta = e.idEncuesta
@@ -76,7 +78,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 
     while ($row = mysql_fetch_assoc($result)) {
         $reporte_html .= "<tr><td>" .   $row['Local'] . "</td>";
-        //echo "<p><b>Semana: </b>" .   $row['idSemana'] . "</p>";
+        
         foreach ($exhib_fields as $field_row) {
             $field_value = $row[$field_row['FieldName']];
             $td_bg_color = '#FFFFFF';
@@ -111,50 +113,59 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     
     <title>REPORTE SEMANAL</title>
-       <link href="menu.css" rel="stylesheet">
+    <link href="menu.css" rel="stylesheet">
     <script src="menu.js"></script>
-<link href="select.css" rel="stylesheet">
-<style type="text/css">
-  table{
-    border-collapse: separate;
-    border-spacing: 5px 0;
-  }
-  table td{
-    border: 1px solid black;
-  }
-   table th{
-    border: 1px solid black;
-  }
-   .button {
-    display: block;
-    width: 115px;
-    height: 35px;
-    background: #4E9CAF;
-    padding: 10px;
-    text-align: center;
-    border-radius: 5px;
-    color: white;
-    font-weight: bold;
-}
-</style>
+    <link href="select.css" rel="stylesheet">
+    <link href="common.css" rel="stylesheet">
+    <style type="text/css">
+    table{
+        border-collapse: separate;
+        
+    }
+    table td{
+        border: 1px solid black;
+    }
+    table th{
+        border: 1px solid black;
+        min-width: 150px;
+        text-align: center;
+    }
+    .button {
+        display: block;
+        width: 115px;
+        height: 35px;
+        background: #4E9CAF;
+        padding: 10px;
+        text-align: center;
+        border-radius: 5px;
+        color: white;
+        font-weight: bold;
+    }
+    </style>
 </head>
 <body>
     <?php include "adm-menu.php"; ?>
 
     <?php echo $msg_welcome; ?>
 <center>
- <center> <img src="LOGO_HORIZONTAL.png" width="300px"> 
+ <center> <img src="LOGO_HORIZONTAL.png" width="300px" class="logo_top"> 
 <h3>Reporte Detalle Semana</h3>
 
 <form action="reporte_semanal.php" method="post">
 <p><select name="mes" id="mes">
 <option value="">Seleccione Mes</option>
-<option value="7">Julio</option>
-<!--<option value="8">Agosto</option>
-<option value="9">Setiembre</option>
-<option value="10">Octubre</option>
-<option value="11">Noviembre</option>
-<option value="12">Diciembre</option>-->
+<option value="1" <?php if(isset($_POST['mes']) && $_POST['mes'] == '1'){ echo 'selected'; } ?>>Enero</option>
+<option value="2" <?php if(isset($_POST['mes']) && $_POST['mes'] == '2'){ echo 'selected'; } ?>>Febrero</option>
+<option value="3" <?php if(isset($_POST['mes']) && $_POST['mes'] == '3'){ echo 'selected'; } ?>>Marzo</option>
+<option value="4" <?php if(isset($_POST['mes']) && $_POST['mes'] == '4'){ echo 'selected'; } ?>>Abril</option>
+<option value="5" <?php if(isset($_POST['mes']) && $_POST['mes'] == '5'){ echo 'selected'; } ?>>Mayo</option>
+<option value="6" <?php if(isset($_POST['mes']) && $_POST['mes'] == '6'){ echo 'selected'; } ?>>Junio</option>
+<option value="7" <?php if(isset($_POST['mes']) && $_POST['mes'] == '7'){ echo 'selected'; } ?>>Julio</option>
+<option value="8" <?php if(isset($_POST['mes']) && $_POST['mes'] == '8'){ echo 'selected'; } ?>>Agosto</option>
+<option value="9" <?php if(isset($_POST['mes']) && $_POST['mes'] == '9'){ echo 'selected'; } ?>>Setiembre</option>
+<option value="10" <?php if(isset($_POST['mes']) && $_POST['mes'] == '10'){ echo 'selected'; } ?>>Octubre</option>
+<option value="11" <?php if(isset($_POST['mes']) && $_POST['mes'] == '11'){ echo 'selected'; } ?>>Noviembre</option>
+<option value="12" <?php if(isset($_POST['mes']) && $_POST['mes'] == '12'){ echo 'selected'; } ?>>Diciembre</option>
 </select></p>
 
 <p><select name="semana" id="semana">
@@ -163,7 +174,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 $fecha_hoy = date("Y-m-d H:i:s");
 $semanas = mysql_query("Select * From Semana Where FechaInicio < '" . $fecha_hoy . "' and FechaFin > '" . $fecha_hoy . "'");
 while ($row = mysql_fetch_assoc($semanas)) {
-    echo '<option value="'.$row['idSemana'].'">'.$row['SemanaMes'].'</option>';
+    $attr = '';
+    if(isset($_POST['semana']) && $row['idSemana'] == $_POST['semana']){
+        $attr = 'selected';
+    }
+
+    echo '<option value="'.$row['idSemana'].'" ' . $attr . '>'.$row['SemanaMes'].'</option>';
 }
 ?>
 
@@ -171,9 +187,9 @@ while ($row = mysql_fetch_assoc($semanas)) {
 
 <p><select name="tipolocal" id="tipolocal">
 <option value="">Seleccione Tipo Local</option>
-<option value="TIP01">Multicategoria</option>
-<option value="TIP02">Envase Descartable</option>
-<option value="TIP03">Sanitario</option>
+<option value="TIP01" <?php if(isset($_POST['tipolocal']) && $_POST['tipolocal'] == 'TIP01'){ echo 'selected'; } ?> >Multicategoria</option>
+<option value="TIP02" <?php if(isset($_POST['tipolocal']) && $_POST['tipolocal'] == 'TIP02'){ echo 'selected'; } ?>>Envase Descartable</option>
+<option value="TIP03" <?php if(isset($_POST['tipolocal']) && $_POST['tipolocal'] == 'TIP03'){ echo 'selected'; } ?>>Sanitario</option>
 </select></p>
 
 <p><select name="ciudad" id="ciudad">
@@ -181,7 +197,11 @@ while ($row = mysql_fetch_assoc($semanas)) {
 <?php
 $departamentos = mysql_query("Select * From Ciudad Where Activo = 'Y'");
 while ($row = mysql_fetch_assoc($departamentos)) {
-   echo '<option value="'.$row['idCiudad'].'">'.$row['Ciudad'].'</option>';
+    $attr = '';
+    if(isset($_POST['ciudad']) && $row['idCiudad'] == $_POST['ciudad']){
+        $attr = 'selected';
+    }
+    echo '<option value="'.$row['idCiudad'].'"' . $attr . '>'.$row['Ciudad'].'</option>';
 }
 ?>
 </select></p>

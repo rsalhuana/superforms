@@ -34,12 +34,7 @@ $nombre_local = $info_encuesta["Local"];
     <!-- Bootstrap CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     
-    <style>
-       .logo_top{
-            margin-top:10px;
-        }
-       
-    </style>
+    <script src="commons.css"></script>
     <script src="commons.js"></script>
     
 </head>

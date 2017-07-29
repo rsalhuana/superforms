@@ -611,69 +611,7 @@ $form_html .= '</form >';
     
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    
-
-  
-    <style> 
-        form{
-            margin-bottom:15px;
-        }
-        .error {
-            display: list-item;
-            max-width: 100%;
-            margin-bottom: 5px;
-            font-weight: 700;
-            color:red;
-        }
-        .none { display:none; }
-        .button {
-            display: inline-block;
-            width: 115px;
-            height: 35px;
-            background: #4E9CAF;
-            padding: 10px;
-            text-align: center;
-            border-radius: 5px;
-            color: white;
-            font-weight: bold;
-            margin-bottom:5px;
-            margin-right: 5px;
-        } 
-        a.btn-page {
-            text-decoration: none;
-            display: inline-block;
-            padding: 8px 16px;
-        }
-
-        a:hover.btn-page {
-            background-color: #ddd;
-            color: black;
-        }
-        button.btn-page {
-            text-decoration: none;
-            display: inline-block;
-            padding: 8px 16px;
-            border-style: none;
-        }
-        .previous {
-            background-color: #f1f1f1;
-            color: black;
-        }
-
-        .next {
-            background-color: #4CAF50;
-            color: white;
-        }
-
-        .round {
-            border-radius: 50%;
-        }
-       
-        .logo_top{
-            margin-top:10px;
-        }
-       
-    </style>
+    <link href="common.css" rel="stylesheet">
 </head>
 <body onload="nobackbutton();">
     <?php include "enc-menu.php"; ?>
